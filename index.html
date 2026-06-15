@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>命理学数字实验室 · Mingli Lab</title>
+  <meta name="description" content="命理学数字实验室——学术级八字排盘、铁板神数计算、条文检索与历史命例对比平台">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── 主页专属样式 ── */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 520px;
+      margin: 64px auto 0;
+      animation: fadeUp 0.6s 0.4s var(--ease) both;
+    }
+    .mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: left;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all var(--duration) var(--ease);
+    }
+    .mini-card:hover {
+      border-color: var(--border-gold);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    .mini-card__icon { font-size: 1.5rem; }
+    .mini-card__title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+    .mini-card__desc { font-size: 0.8rem; color: var(--text-tertiary); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .about-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      text-align: center;
+      box-shadow: var(--shadow-gold);
+      animation: goldPulse 4s ease infinite;
+    }
+    .pillars-mini {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 0 auto;
+    }
+    .pillar-mini {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 8px;
+      text-align: center;
+    }
+    .pillar-mini .stem { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+    .pillar-mini .branch { font-size: 1.6rem; font-weight: 700; color: var(--text-primary); }
+    .pillar-mini .lbl { font-size: 0.65rem; color: var(--text-tertiary); margin-bottom: 6px; }
+
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 28px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -28px; top: 6px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(201,168,76,0.5);
+    }
+    .timeline-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .timeline-item p  { font-size: 0.85rem; color: var(--text-secondary); }
+
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .source-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .source-item__title { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--gold); }
+    .source-item__desc  { font-size: 0.8rem; color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<!-- ── 导航 ── -->
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html" class="active">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+  </ul>
+  <div class="nav-toggle" aria-label="菜单"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__eyebrow">学术研究工具 · Academic Research</div>
+  <h1 class="display-xl hero__title">
+    命理学<br><em>数字实验室</em>
+  </h1>
+  <p class="hero__subtitle">
+    以现代数字技术还原传统命理学精髓。<br>
+    八字排盘 · 铁板神数 · 条文检索 · 历史命例对比
+  </p>
+  <div class="hero__actions">
+    <a href="bazi.html" class="btn btn-primary">开始排盘 →</a>
+    <a href="cases.html" class="btn btn-secondary">查看命例</a>
+  </div>
+
+  <!-- 迷你四柱展示 -->
+  <div class="hero-grid">
+    <a href="bazi.html" class="mini-card">
+      <div class="mini-card__icon">☰</div>
+      <div class="mini-card__title">八字排盘</div>
+      <div class="mini-card__desc">四柱八字·十神·大运</div>
+    </a>
+    <a href="tiepan.html" class="mini-card">
+      <div class="mini-card__icon">⬡</div>
+      <div class="mini-card__title">铁板神数</div>
+      <div class="mini-card__desc">先天数推演·条文索引</div>
+    </a>
+    <a href="search.html" class="mini-card">
+      <div class="mini-card__icon">◎</div>
+      <div class="mini-card__title">条文检索</div>
+      <div class="mini-card__desc">全文搜索命理典籍</div>
+    </a>
+    <a href="cases.html" class="mini-card">
+      <div class="mini-card__icon">◈</div>
+      <div class="mini-card__title">历史命例</div>
+      <div class="mini-card__desc">名人八字·对比分析</div>
+    </a>
+  </div>
+</section>
+
+<!-- ── 关于 ── -->
+<section class="section" style="background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <div class="page-header__label" style="margin-bottom:20px;">关于本站</div>
+        <h2 class="display-md" style="margin-bottom:20px;">
+          以数字还原<br><span class="text-gold">千年命理精髓</span>
+        </h2>
+        <p class="body-lg text-secondary" style="margin-bottom:32px;">
+          命理学数字实验室（Mingli Lab）是一个纯学术研究平台，致力于通过现代算法精确还原传统命理学的推演体系，为研究者提供严谨的数字工具。
+        </p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h4>八字命理（子平术）</h4>
+            <p>源自唐代李虚中，宋代徐子平完善，以年月日时四柱推演人生格局</p>
+          </div>
+          <div class="timeline-item">
+            <h4>铁板神数</h4>
+            <p>宋代邵雍所创，以先天数理推演命运条文，精密而系统</p>
+          </div>
+          <div class="timeline-item">
+            <h4>现代数字化</h4>
+            <p>本站将传统算法转化为精确的数字逻辑，保留学术严谨性</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-visual">
+        <p class="caption text-tertiary" style="margin-bottom:20px;">示例命盘（甲子年 · 庚午月 · 壬辰日 · 甲寅时）</p>
+        <div class="pillars-mini">
+          <div class="pillar-mini">
+            <div class="lbl">年柱</div>
+            <div class="stem" style="color:var(--el-wood, #4ade80)">甲</div>
+            <div class="branch">子</div>
+          </div>
+          <div class="pillar-mini">
+            <div class="lbl">月柱</div>
+            <div class="stem" style="color:var(--el-fire, #f87171)">庚</div>
+            <div class="branch">午</div>
+          </div>
+          <div class="pillar-mini" style="border-color:var(--border-gold)">
+            <div class="lbl">日柱</div>
+            <div class="stem" style="color:var(--gold)">壬</div>
+            <div class="branch">辰</div>
+          </div>
+          <div class="pillar-mini">
+            <div class="lbl">时柱</div>
+            <div class="stem" style="color:var(--el-wood, #4ade80)">甲</div>
+            <div class="branch">寅</div>
+          </div>
+        </div>
+        <p class="body-sm text-tertiary" style="margin-top:16px;">日主壬水 · 水木为用 · 印绶格</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 数据统计 ── -->
+<section class="section">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:48px;">
+      <div class="page-header__label" style="margin-bottom:16px; display:inline-block">数据规模</div>
+      <h2 class="display-md">学术级数据库</h2>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num" data-target="3600">0</div>
+        <div class="stat__label">铁板神数条文</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-target="60">0</div>
+        <div class="stat__label">六十甲子纳音</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-target="10">0</div>
+        <div class="stat__label">十神体系</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-target="100">0</div>
+        <div class="stat__label">历史命例</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 典籍来源 ── -->
+<section class="section" style="border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:48px;">
+      <div class="page-header__label" style="margin-bottom:16px; display:inline-block">学术来源</div>
+      <h2 class="display-md">依据原典研究</h2>
+      <p class="body-lg text-secondary" style="margin-top:16px;">本站算法与条文数据均基于以下学术典籍</p>
+    </div>
+    <div class="source-grid">
+      <div class="source-item">
+        <div class="source-item__title">《铁板神数》</div>
+        <div class="source-item__desc">宋·邵雍著，陈明点校。先天数理推命体系之源典，本站主要参考版本。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《渊海子平》</div>
+        <div class="source-item__desc">宋·徐子平原创，后人整理。子平八字学奠基之作，十神格局之权威。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《三命通会》</div>
+        <div class="source-item__desc">明·万民英著。集历代命理大成，论命精详，为八字推命必读经典。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《千里命稿》</div>
+        <div class="source-item__desc">韦千里著。近代命理学代表作，案例丰富，论断精准，学术价值极高。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《皇极经世书》</div>
+        <div class="source-item__desc">宋·邵雍著。先天易学与数理哲学之集大成，铁板神数理论基础。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《紫微斗数全书》</div>
+        <div class="source-item__desc">陈希夷原著。斗数命理之源，与八字并列为中国两大推命体系。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p style="margin-bottom:8px;">学术研究工具，非商业占卜服务</p>
+    <p>本站算法基于传统命理学文献，仅供学术研究参考</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // 数字滚动动画
+  const stats = document.querySelectorAll('.stat__num[data-target]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        ML.animateNumber(e.target, +e.target.dataset.target);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  stats.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
