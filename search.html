@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>条文检索 · 命理学数字实验室</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .search-hero {
+      text-align: center;
+      padding: calc(var(--nav-h) + 64px) 0 48px;
+      position: relative;
+    }
+    .search-hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(ellipse 70% 80% at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .filter-row {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin: 24px 0;
+    }
+    .filter-chip {
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: all var(--duration) var(--ease);
+      cursor: pointer;
+    }
+    .filter-chip:hover, .filter-chip.active {
+      border-color: var(--border-gold);
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+    .result-count {
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+    .article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all var(--duration) var(--ease);
+    }
+    .article-card:hover {
+      border-color: var(--border-gold);
+      background: var(--bg-card-hover);
+      transform: translateX(4px);
+    }
+    .article-card.expanded { border-color: var(--border-gold); }
+    .article-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 16px;
+    }
+    .article-id {
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+    .article-title {
+      font-size: 1rem; font-weight: 600;
+      color: var(--text-primary);
+    }
+    .article-excerpt {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      line-height: 1.6;
+      /* Single line preview */
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .article-full {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .article-card.expanded .article-full { display: block; }
+    .article-card.expanded .article-excerpt { white-space: normal; overflow: visible; }
+    .article-content {
+      font-size: 1rem;
+      line-height: 2;
+      color: var(--text-primary);
+      font-family: 'PingFang SC','STSong','SimSun', serif;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+    .article-note {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+    }
+    mark {
+      background: rgba(201,168,76,0.25);
+      color: var(--gold-light);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+    .no-results {
+      text-align: center;
+      padding: 64px 0;
+      color: var(--text-tertiary);
+    }
+    .no-results__icon { font-size: 3rem; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html" class="active">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="search-hero">
+  <div class="page-header__label" style="display:inline-block;margin-bottom:20px;">Article Search</div>
+  <h1 class="display-lg" style="margin-bottom:24px;">条文检索</h1>
+  <div class="search-wrap">
+    <span class="search-icon">◎</span>
+    <input class="search-input" id="search-input" type="text"
+           placeholder="搜索条文内容、分类、注释… 如「婚姻」「财星」「印绶」">
+  </div>
+</div>
+
+<main style="padding: 0 0 96px;">
+  <div class="container" style="max-width:820px;">
+
+    <!-- 分类筛选 -->
+    <div class="filter-row" id="filters">
+      <div class="filter-chip active" data-cat="">全部</div>
+    </div>
+
+    <div class="result-count" id="result-count"></div>
+    <div id="articles-list"></div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，仅供参考</p>
+  </div>
+</footer>
+
+<script src="js/tiepan.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let allArticles = [];
+  let currentCat = '';
+  let currentQuery = '';
+
+  async function loadArticles() {
+    try {
+      const r = await fetch('data/tiepan.json');
+      const data = await r.json();
+      allArticles = data.articles || [];
+
+      // 生成分类筛选
+      const cats = [...new Set(allArticles.map(a => a.category))];
+      const filtersEl = document.getElementById('filters');
+      cats.forEach(cat => {
+        const chip = document.createElement('div');
+        chip.className = 'filter-chip';
+        chip.dataset.cat = cat;
+        chip.textContent = cat;
+        filtersEl.appendChild(chip);
+      });
+
+      // 补充内置条文（铁板神数JS中的数据）
+      const builtIn = Object.values(TIEPAN.TIAOWEN_DB);
+      builtIn.forEach(t => {
+        if (!allArticles.find(a => a.id === t.id)) {
+          allArticles.push({
+            id: t.id,
+            juan: parseInt(t.id.split('-')[0]),
+            tiao: parseInt(t.id.split('-')[1]),
+            category: t.category,
+            title: t.text,
+            content: t.content,
+            note: t.note,
+            tags: []
+          });
+        }
+      });
+
+      renderArticles();
+    } catch(e) {
+      // fallback: 使用内置数据
+      allArticles = Object.values(TIEPAN.TIAOWEN_DB).map(t => ({
+        id: t.id,
+        juan: parseInt(t.id.split('-')[0]),
+        tiao: parseInt(t.id.split('-')[1]),
+        category: t.category,
+        title: t.text,
+        content: t.content,
+        note: t.note,
+        tags: []
+      }));
+      renderArticles();
+    }
+  }
+
+  function renderArticles() {
+    const q = currentQuery.trim().toLowerCase();
+    const list = allArticles.filter(a => {
+      const catMatch = !currentCat || a.category === currentCat;
+      if (!catMatch) return false;
+      if (!q) return true;
+      return a.content.toLowerCase().includes(q) ||
+             a.note.toLowerCase().includes(q) ||
+             a.category.toLowerCase().includes(q) ||
+             (a.title || '').toLowerCase().includes(q) ||
+             (a.tags || []).some(t => t.includes(q));
+    });
+
+    document.getElementById('result-count').textContent =
+      `找到 ${list.length} 条相关条文`;
+
+    const container = document.getElementById('articles-list');
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="no-results">
+          <div class="no-results__icon">◎</div>
+          <p>未找到相关条文</p>
+          <p class="body-sm" style="margin-top:8px;">尝试其他关键词，如「官禄」「财帛」「父母」</p>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(a => {
+      const excerpt = highlight(a.content.substring(0, 60) + (a.content.length > 60 ? '…' : ''), q);
+      return `
+        <div class="article-card" onclick="toggleArticle(this)" data-id="${a.id}">
+          <div class="article-header">
+            <div style="flex:1;min-width:0;">
+              <div class="article-id">第${a.juan}卷第${a.tiao}条 · ${a.category}</div>
+              <div class="article-title">${highlight(a.title || a.id, q)}</div>
+              <div class="article-excerpt">${excerpt}</div>
+            </div>
+            <div class="tag tag-gold" style="white-space:nowrap;flex-shrink:0;">${a.category}</div>
+          </div>
+          <div class="article-full">
+            <div class="article-content">${highlight(a.content, q)}</div>
+            <div class="article-note">📝 ${highlight(a.note || '', q)}</div>
+            ${(a.tags || []).length ? `<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+              ${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function highlight(text, q) {
+    if (!q) return text;
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(escaped, 'gi'), m => `<mark>${m}</mark>`);
+  }
+
+  function toggleArticle(card) {
+    card.classList.toggle('expanded');
+  }
+
+  // 搜索
+  let debounce;
+  document.getElementById('search-input').addEventListener('input', e => {
+    currentQuery = e.target.value;
+    clearTimeout(debounce);
+    debounce = setTimeout(renderArticles, 200);
+  });
+
+  // 分类筛选
+  document.getElementById('filters').addEventListener('click', e => {
+    const chip = e.target.closest('.filter-chip');
+    if (!chip) return;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentCat = chip.dataset.cat;
+    renderArticles();
+  });
+
+  // 从URL参数自动搜索
+  const q = ML.getQueryParam('q');
+  if (q) {
+    document.getElementById('search-input').value = q;
+    currentQuery = q;
+  }
+
+  loadArticles();
+</script>
+</body>
+</html>
