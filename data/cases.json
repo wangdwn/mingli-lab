@@ -1,0 +1,132 @@
+{
+  "cases": [
+    {
+      "id": "mao-zedong",
+      "name": "毛泽东",
+      "birth": { "year": 1893, "month": 12, "day": 26, "hour": 7 },
+      "gender": "male",
+      "description": "中华人民共和国主要缔造者，政治家、军事家、诗人",
+      "tags": ["历史人物", "领袖", "近现代"],
+      "bazi": {
+        "year":  { "stem": "癸", "branch": "巳" },
+        "month": { "stem": "甲", "branch": "子" },
+        "day":   { "stem": "丁", "branch": "酉" },
+        "hour":  { "stem": "甲", "branch": "辰" }
+      },
+      "analysis": "日主丁火生于子月，冬令水旺，丁火弱。年干癸水七杀，月干甲木正印，印星生身。格局为印绶格，印助弱主，木火通明。大运入木火运，印比得令，成就非凡。",
+      "source": "《中国名人八字解析》"
+    },
+    {
+      "id": "deng-xiaoping",
+      "name": "邓小平",
+      "birth": { "year": 1904, "month": 8, "day": 22, "hour": 15 },
+      "gender": "male",
+      "description": "中国改革开放的总设计师，政治家",
+      "tags": ["历史人物", "领袖", "近现代"],
+      "bazi": {
+        "year":  { "stem": "甲", "branch": "辰" },
+        "month": { "stem": "庚", "branch": "申" },
+        "day":   { "stem": "癸", "branch": "亥" },
+        "hour":  { "stem": "壬", "branch": "申" }
+      },
+      "analysis": "日主癸水生于申月，金水相生，身旺。月干庚金正印，时支申金，印星有力。格局印绶格，水木为用。历经磨难而不屈，晚年大用，改革开放辉煌成就。",
+      "source": "《中国名人八字解析》"
+    },
+    {
+      "id": "li-bai",
+      "name": "李白",
+      "birth": { "year": 701, "month": 2, "day": 8, "hour": 23 },
+      "gender": "male",
+      "description": "唐代伟大浪漫主义诗人，被誉为「诗仙」",
+      "tags": ["历史人物", "文学家", "唐代"],
+      "bazi": {
+        "year":  { "stem": "辛", "branch": "丑" },
+        "month": { "stem": "甲", "branch": "寅" },
+        "day":   { "stem": "丁", "branch": "卯" },
+        "hour":  { "stem": "庚", "branch": "子" }
+      },
+      "analysis": "日主丁火生于寅月，木旺生火，身旺。年干辛金偏财，月干甲木正印，印星临旺地。格局木火通明，文采飞扬，天生诗才。傲岸不羁，仕途不顺，才华横溢于诗词之间。",
+      "source": "《唐代名人命理考》"
+    },
+    {
+      "id": "su-shi",
+      "name": "苏轼",
+      "birth": { "year": 1037, "month": 1, "day": 8, "hour": 3 },
+      "gender": "male",
+      "description": "北宋著名文学家、书法家、画家，「唐宋八大家」之一",
+      "tags": ["历史人物", "文学家", "宋代"],
+      "bazi": {
+        "year":  { "stem": "丁", "branch": "丑" },
+        "month": { "stem": "丁", "branch": "丑" },
+        "day":   { "stem": "丙", "branch": "申" },
+        "hour":  { "stem": "壬", "branch": "寅" }
+      },
+      "analysis": "日主丙火生于丑月，土旺，丙火中和。年月双丁比肩，火势不弱。时支寅木，木生火有源。格局比劫格兼印，才华横溢，文章盖世。然劫财多，仕途多波折，屡遭贬黜。",
+      "source": "《宋代名臣命理》"
+    },
+    {
+      "id": "wu-zetian",
+      "name": "武则天",
+      "birth": { "year": 624, "month": 2, "day": 17, "hour": 23 },
+      "gender": "female",
+      "description": "中国历史上唯一正统女皇帝，唐高宗李治皇后，后改国号为周",
+      "tags": ["历史人物", "帝王", "唐代", "女性"],
+      "bazi": {
+        "year":  { "stem": "甲", "branch": "申" },
+        "month": { "stem": "壬", "branch": "寅" },
+        "day":   { "stem": "庚", "branch": "午" },
+        "hour":  { "stem": "庚", "branch": "子" }
+      },
+      "analysis": "日主庚金生于寅月，木旺，七杀当令。年干甲木七杀，月干壬水食神，食神制杀。格局食神制杀，主女命中有权威，能制强悍七杀而掌权。庚金坐午，有丁火正官，贵格。",
+      "source": "《历代帝王命理考》"
+    },
+    {
+      "id": "confucius",
+      "name": "孔子",
+      "birth": { "year": -550, "month": 10, "day": 9, "hour": 7 },
+      "gender": "male",
+      "description": "中国古代思想家、教育家，儒家学派创始人",
+      "tags": ["历史人物", "思想家", "春秋"],
+      "bazi": {
+        "year":  { "stem": "庚", "branch": "戌" },
+        "month": { "stem": "戊", "branch": "戌" },
+        "day":   { "stem": "庚", "branch": "子" },
+        "hour":  { "stem": "戊", "branch": "辰" }
+      },
+      "analysis": "日主庚金生于戌月，土旺生金，身旺。月干戊土正印，年干庚金比肩。格局印绶格，金气刚健，学识深厚。一生致力传道授业，虽仕途不顺，然立德立言，万世师表。",
+      "source": "《先秦诸子命理考》（推算值，历史记载有限）"
+    },
+    {
+      "id": "cao-cao",
+      "name": "曹操",
+      "birth": { "year": 155, "month": 7, "day": 18, "hour": 5 },
+      "gender": "male",
+      "description": "东汉末年政治家、军事家、文学家，三国时期魏国奠基人",
+      "tags": ["历史人物", "政治家", "三国"],
+      "bazi": {
+        "year":  { "stem": "乙", "branch": "卯" },
+        "month": { "stem": "己", "branch": "未" },
+        "day":   { "stem": "己", "branch": "亥" },
+        "hour":  { "stem": "庚", "branch": "寅" }
+      },
+      "analysis": "日主己土生于未月，土旺得令，身旺。年干乙木七杀，有克伐之气。格局七杀格，主枭雄之命，霸气纵横，雄才大略。乱世之中，以杰出军事才能统一北方，「宁教我负天下人」之气概。",
+      "source": "《三国名将命理考》（推算值）"
+    },
+    {
+      "id": "zhuge-liang",
+      "name": "诸葛亮",
+      "birth": { "year": 181, "month": 4, "day": 14, "hour": 7 },
+      "gender": "male",
+      "description": "三国时期蜀汉丞相，杰出的政治家、军事家、发明家",
+      "tags": ["历史人物", "谋略家", "三国"],
+      "bazi": {
+        "year":  { "stem": "辛", "branch": "酉" },
+        "month": { "stem": "癸", "branch": "巳" },
+        "day":   { "stem": "壬", "branch": "戌" },
+        "hour":  { "stem": "甲", "branch": "辰" }
+      },
+      "analysis": "日主壬水生于巳月，火旺，身弱。年干辛金正印，月干癸水比肩，印比有力。格局印绶格，水木秀气，智谋超群。「鞠躬尽瘁，死而后已」，忠诚智慧之典范。",
+      "source": "《三国名将命理考》（推算值）"
+    }
+  ]
+}
