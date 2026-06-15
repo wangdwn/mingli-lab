@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>铁板神数 · 命理学数字实验室</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .input-card { max-width: 680px; margin: 0 auto 48px; }
+    .gender-toggle { display: flex; gap: 8px; }
+    .gender-btn {
+      flex: 1; padding: 11px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      transition: all var(--duration) var(--ease);
+    }
+    .gender-btn.active {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .steps-grid {
+      display: flex; flex-direction: column; gap: 12px; margin: 24px 0;
+    }
+    .step-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .step-row.highlight {
+      border-color: var(--border-gold);
+      background: var(--gold-dim);
+    }
+    .step-label { font-size: 0.85rem; color: var(--text-secondary); }
+    .step-val { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+    .step-row.highlight .step-val { color: var(--gold); font-size: 1.3rem; }
+
+    .tiaowen-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin: 24px 0;
+      position: relative;
+    }
+    .tiaowen-box::before {
+      content: '"';
+      position: absolute;
+      top: -16px; left: 24px;
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 1;
+      font-family: serif;
+    }
+    .tiaowen-content {
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--text-primary);
+      font-family: 'PingFang SC', 'STSong', 'SimSun', serif;
+      letter-spacing: 0.05em;
+    }
+    .tiaowen-note {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .gua-display {
+      display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap;
+    }
+    .gua-card {
+      flex: 1; min-width: 140px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+    .gua-name { font-size: 2rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+    .gua-label { font-size: 0.75rem; color: var(--text-tertiary); }
+
+    .minggua-result {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .about-tiepan {
+      max-width: 760px;
+      margin: 0 auto 48px;
+    }
+    .method-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .method-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--gold); }
+    .method-card p  { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html" class="active">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">TieBan ShenShu · 邵雍著</div>
+  <h1 class="display-lg">铁板神数</h1>
+  <p class="body-lg text-secondary" style="margin-top:12px; max-width:520px; margin-left:auto; margin-right:auto;">
+    宋·邵雍以先天数理推演命运，条文精密，学术价值极高
+  </p>
+</div>
+
+<main style="padding: 0 0 96px;">
+  <div class="container">
+
+    <!-- 简介 -->
+    <div class="about-tiepan">
+      <div class="method-card">
+        <h4>⬡ 铁板神数推演原理</h4>
+        <p>铁板神数由宋代邵雍（1011-1077）所著，以先天八卦数为基础，将出生年月日时的天干地支转化为先天数，经过加减演算得出总数，再按总数查对应条文。条文以四句诗歌形式呈现，内容涵盖命主六亲、财官、婚育、健康等各方面。</p>
+      </div>
+      <div class="method-card">
+        <h4>⬡ 学术研究说明</h4>
+        <p>本推算工具为学术研究版本，采用先天数加总法。先天数 = 年干数 + 年支数 + 农历月数 + 农历日数 + 时支数 + 性别数（男+1，女+2）。结果条文索引仅供研究参考，如需精确查阅完整条文，请参阅陈明点校版《铁板神数》原典。</p>
+      </div>
+    </div>
+
+    <!-- 输入表单 -->
+    <div class="card input-card">
+      <h2 class="headline" style="margin-bottom:6px;">先天数推演</h2>
+      <p class="body-sm text-tertiary" style="margin-bottom:24px;">请输入出生信息（建议使用农历月日）</p>
+
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label class="form-label">出生年（公历）</label>
+          <input class="form-input" id="tp-year" type="number" min="100" max="2100" placeholder="如 1990">
+        </div>
+        <div class="form-group">
+          <label class="form-label">农历月（1-12）</label>
+          <input class="form-input" id="tp-month" type="number" min="1" max="12" placeholder="1-12">
+        </div>
+        <div class="form-group">
+          <label class="form-label">农历日（1-30）</label>
+          <input class="form-input" id="tp-day" type="number" min="1" max="30" placeholder="1-30">
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label class="form-label">出生时辰（地支）</label>
+          <select class="form-select" id="tp-hour">
+            <option value="子">子时（23-01时）</option>
+            <option value="丑">丑时（01-03时）</option>
+            <option value="寅">寅时（03-05时）</option>
+            <option value="卯">卯时（05-07时）</option>
+            <option value="辰">辰时（07-09时）</option>
+            <option value="巳">巳时（09-11时）</option>
+            <option value="午">午时（11-13时）</option>
+            <option value="未">未时（13-15时）</option>
+            <option value="申">申时（15-17时）</option>
+            <option value="酉">酉时（17-19时）</option>
+            <option value="戌">戌时（19-21时）</option>
+            <option value="亥">亥时（21-23时）</option>
+          </select>
+        </div>
+        <div class="form-group" style="justify-content:flex-end; align-self:flex-end;">
+          <div class="gender-toggle">
+            <button class="gender-btn active" data-gender="male">♂ 男命</button>
+            <button class="gender-btn" data-gender="female">♀ 女命</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-tp-calc" style="width:100%">推算先天数 →</button>
+    </div>
+
+    <!-- 结果 -->
+    <div id="tp-result" class="hidden" style="max-width:760px; margin:0 auto;">
+      <div class="result-panel">
+        <h2 class="headline" style="margin-bottom:24px;">推算结果</h2>
+
+        <!-- 步骤展示 -->
+        <p class="caption text-tertiary" style="margin-bottom:12px;">推算步骤</p>
+        <div class="steps-grid" id="tp-steps"></div>
+
+        <!-- 卦象 -->
+        <p class="caption text-tertiary" style="margin-top:24px;margin-bottom:12px;">卦象推演</p>
+        <div class="gua-display" id="tp-gua"></div>
+
+        <!-- 条文 -->
+        <p class="caption text-tertiary" style="margin-top:24px;margin-bottom:4px;" id="tp-tiao-label"></p>
+        <div class="tiaowen-box">
+          <div class="tiaowen-content" id="tp-content"></div>
+          <div class="tiaowen-note" id="tp-note"></div>
+        </div>
+
+        <p class="body-sm text-tertiary" style="margin-top:16px; padding:12px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
+          ⓘ 铁板神数原典共数千条文，本工具为学术研究简化版。如需完整条文，请参阅邵雍著、陈明点校《铁板神数》（工作室藏书）。
+        </p>
+      </div>
+
+      <!-- 命卦 -->
+      <div class="result-panel" style="margin-top:24px;">
+        <h3 class="headline" style="margin-bottom:16px;">命卦（先天八卦命卦）</h3>
+        <div class="minggua-result" id="tp-minggua"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，仅供参考</p>
+  </div>
+</footer>
+
+<script src="js/tiepan.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let isMale = true;
+
+  document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      isMale = btn.dataset.gender === 'male';
+    });
+  });
+
+  document.getElementById('btn-tp-calc').addEventListener('click', doCalc);
+
+  function doCalc() {
+    const year  = +document.getElementById('tp-year').value;
+    const month = +document.getElementById('tp-month').value;
+    const day   = +document.getElementById('tp-day').value;
+    const hour  = document.getElementById('tp-hour').value;
+
+    if (!year || !month || !day) { ML.toast('请填写完整信息', 'error'); return; }
+
+    // 从年份推算年干支
+    const TG = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const DZ = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    const yearStem   = TG[(year - 4 + 4000) % 10];
+    const yearBranch = DZ[(year - 4 + 4000) % 12];
+
+    const r = TIEPAN.calculate(yearStem, yearBranch, month, day, hour, isMale);
+    renderTP(r, year);
+    document.getElementById('tp-result').classList.remove('hidden');
+    document.getElementById('tp-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderTP(r, year) {
+    // 步骤
+    const stepsEl = document.getElementById('tp-steps');
+    stepsEl.innerHTML = r.steps.map(s => `
+      <div class="step-row ${s.highlight ? 'highlight' : ''}">
+        <div class="step-label">
+          ${s.label}
+          ${s.note ? `<span class="text-tertiary" style="margin-left:8px;font-size:0.75rem">${s.note}</span>` : ''}
+          ${s.stem ? `<span class="text-gold" style="margin-left:8px;">${s.stem}</span>` : ''}
+          ${s.branch ? `<span class="text-secondary" style="margin-left:8px;">${s.branch}</span>` : ''}
+        </div>
+        <div class="step-val">${s.value}</div>
+      </div>
+    `).join('');
+
+    // 卦
+    const guaEl = document.getElementById('tp-gua');
+    guaEl.innerHTML = `
+      <div class="gua-card">
+        <div class="gua-name">${r.guaName}</div>
+        <div class="gua-label">本卦</div>
+      </div>
+      <div class="gua-card">
+        <div class="gua-name">${r.bianGuaName}</div>
+        <div class="gua-label">变卦</div>
+      </div>
+      <div class="gua-card" style="border-color:var(--border-gold)">
+        <div style="font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:4px;">第${r.juanNum}卷</div>
+        <div class="gua-label">卷号</div>
+      </div>
+      <div class="gua-card" style="border-color:var(--border-gold)">
+        <div style="font-size:1.4rem;font-weight:700;color:var(--gold);margin-bottom:4px;">第${r.tiaoNum}条</div>
+        <div class="gua-label">条文号</div>
+      </div>
+    `;
+
+    // 条文
+    document.getElementById('tp-tiao-label').textContent =
+      `${r.tiaowen.text} · ${r.tiaowen.category}`;
+    document.getElementById('tp-content').textContent = r.tiaowen.content;
+    document.getElementById('tp-note').textContent = r.tiaowen.note;
+
+    // 命卦
+    const mg = TIEPAN.calcMingGua(year, r.male);
+    document.getElementById('tp-minggua').innerHTML = `
+      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:700;color:var(--gold);line-height:1;">${mg.guaName}</div>
+          <div class="caption text-tertiary" style="margin-top:4px;">命卦</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-secondary">卦号</span>
+            <span>${mg.guaNum}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-secondary">五行</span>
+            <span style="color:${ML.WX_COLOR[mg.wx]}">${mg.wx}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-secondary">吉方</span>
+            <span>${mg.direction}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;">
+            <span class="text-secondary">命类</span>
+            <span class="tag tag-gold">${mg.type}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>
