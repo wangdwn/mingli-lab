@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>历史命例 · 命理学数字实验室</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      cursor: pointer;
+      transition: all var(--duration) var(--ease);
+      text-decoration: none;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .case-card:hover {
+      border-color: var(--border-gold);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    .case-card.selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold), var(--shadow-gold);
+    }
+    .case-card__header {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .case-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-dim), rgba(201,168,76,0.05));
+      border: 1px solid var(--border-gold);
+      display: grid; place-items: center;
+      font-size: 1.2rem; font-weight: 700; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .case-name { font-size: 1.1rem; font-weight: 700; }
+    .case-era  { font-size: 0.75rem; color: var(--text-tertiary); }
+    .case-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .case-pillars-mini {
+      display: flex; gap: 6px;
+    }
+    .mini-pillar {
+      flex: 1; text-align: center;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      padding: 6px 4px;
+    }
+    .mini-pillar .s { font-size: 1rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .mini-pillar .b { font-size: 1rem; font-weight: 700; color: var(--text-primary); line-height: 1; }
+
+    /* 详情面板 */
+    .detail-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--shadow-gold);
+      animation: fadeUp 0.4s var(--ease) both;
+      margin-bottom: 48px;
+    }
+    .detail-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 24px;
+      margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .detail-name { font-size: 2rem; font-weight: 700; margin-bottom: 6px; }
+    .analysis-box {
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .birth-info {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .birth-info-item { font-size: 0.85rem; }
+    .birth-info-item span { color: var(--text-tertiary); margin-right: 4px; }
+
+    /* 对比功能 */
+    .compare-bar {
+      position: sticky; bottom: 24px; z-index: 50;
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-pill);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      max-width: 600px;
+      margin: 0 auto;
+      animation: fadeUp 0.3s ease both;
+    }
+    .compare-bar.hidden { display: none; }
+    .compare-bar__text { flex: 1; font-size: 0.9rem; color: var(--text-secondary); }
+    .compare-bar__count { color: var(--gold); font-weight: 700; }
+
+    .tag-filter-row {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .tag-filter {
+      padding: 5px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--duration) var(--ease);
+    }
+    .tag-filter:hover, .tag-filter.active {
+      border-color: var(--border-gold);
+      color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    /* 对比视图 */
+    .compare-view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .compare-view.active { display: block; }
+    .compare-table { width: 100%; }
+    .compare-table th { font-weight: 600; color: var(--gold); }
+    .compare-col { vertical-align: top; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html" class="active">历史命例</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">Historical Cases</div>
+  <h1 class="display-lg">历史命例</h1>
+  <p class="body-lg text-secondary" style="margin-top:12px; max-width:520px; margin-left:auto; margin-right:auto;">
+    名人八字案例库，学术分析与命例对比研究
+  </p>
+</div>
+
+<main style="padding: 0 0 96px;">
+  <div class="container">
+
+    <!-- 筛选 -->
+    <div class="tag-filter-row" id="tag-filters">
+      <div class="tag-filter active" data-tag="">全部</div>
+      <div class="tag-filter" data-tag="历史人物">历史人物</div>
+      <div class="tag-filter" data-tag="领袖">领袖</div>
+      <div class="tag-filter" data-tag="文学家">文学家</div>
+      <div class="tag-filter" data-tag="近现代">近现代</div>
+      <div class="tag-filter" data-tag="唐代">唐代</div>
+      <div class="tag-filter" data-tag="宋代">宋代</div>
+      <div class="tag-filter" data-tag="三国">三国</div>
+    </div>
+
+    <!-- 工具栏 -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:8px;">
+      <div class="body-sm text-tertiary" id="cases-count"></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" id="btn-compare" style="display:none" onclick="showCompare()">
+          对比选中命例
+        </button>
+        <button class="btn btn-secondary" onclick="clearSelection()">清除选择</button>
+      </div>
+    </div>
+
+    <!-- 命例卡片网格 -->
+    <div class="cases-grid" id="cases-grid"></div>
+
+    <!-- 详情面板 -->
+    <div class="detail-panel hidden" id="detail-panel">
+      <div class="detail-header">
+        <div>
+          <div class="detail-name" id="det-name"></div>
+          <div class="birth-info" id="det-birth"></div>
+          <div id="det-tags"></div>
+        </div>
+        <button class="btn btn-ghost" onclick="document.getElementById('detail-panel').classList.add('hidden')">关闭</button>
+      </div>
+      <p class="body-sm text-secondary" style="margin-bottom:20px;" id="det-desc"></p>
+
+      <!-- 八字 -->
+      <div class="pillars" id="det-pillars" style="margin-bottom:0"></div>
+
+      <!-- 分析 -->
+      <div class="analysis-box" id="det-analysis"></div>
+
+      <!-- 五行统计 -->
+      <div id="det-wuxing"></div>
+
+      <!-- 来源 -->
+      <div class="body-sm text-tertiary" style="margin-top:16px;" id="det-source"></div>
+    </div>
+
+    <!-- 对比视图 -->
+    <div class="compare-view" id="compare-view">
+      <h2 class="headline" style="margin-bottom:24px;">命例对比</h2>
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead id="cmp-head"></thead>
+          <tbody id="cmp-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- 对比栏 -->
+<div class="compare-bar hidden" id="compare-bar">
+  <div class="compare-bar__text">已选 <span class="compare-bar__count" id="cmp-count">0</span> 个命例</div>
+  <button class="btn btn-primary" onclick="showCompare()">开始对比</button>
+  <button class="btn btn-secondary" onclick="clearSelection()">清除</button>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，仅供参考·历史命盘部分为推算值</p>
+  </div>
+</footer>
+
+<script src="js/bazi.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let allCases = [];
+  let selectedIds = new Set();
+  let currentTag = '';
+  let openCase = null;
+
+  const WX_COLOR = ML.WX_COLOR;
+
+  async function loadCases() {
+    try {
+      const r = await fetch('data/cases.json');
+      const data = await r.json();
+      allCases = data.cases;
+    } catch(e) {
+      allCases = getBuiltinCases();
+    }
+    document.getElementById('cases-count').textContent = `共 ${allCases.length} 个命例`;
+    renderCases();
+  }
+
+  function renderCases() {
+    const list = currentTag
+      ? allCases.filter(c => (c.tags || []).includes(currentTag))
+      : allCases;
+
+    document.getElementById('cases-count').textContent = `共 ${list.length} 个命例`;
+
+    const grid = document.getElementById('cases-grid');
+    grid.innerHTML = list.map(c => {
+      const bz = c.bazi;
+      const sel = selectedIds.has(c.id);
+      return `
+        <div class="case-card ${sel ? 'selected' : ''}"
+             data-id="${c.id}"
+             onclick="handleCardClick(event, '${c.id}')">
+          <div class="case-card__header">
+            <div class="case-avatar">${c.name[0]}</div>
+            <div>
+              <div class="case-name">${c.name}</div>
+              <div class="case-era">${c.birth.year}年 · ${(c.tags||[]).join(' · ')}</div>
+            </div>
+          </div>
+          <div class="case-desc">${c.description}</div>
+          <div class="case-pillars-mini">
+            ${['year','month','day','hour'].map(k => `
+              <div class="mini-pillar">
+                <div class="s">${bz[k].stem}</div>
+                <div class="b">${bz[k].branch}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${(c.tags||[]).map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function handleCardClick(e, id) {
+    // 长按/Ctrl 选择
+    if (e.ctrlKey || e.metaKey) {
+      toggleSelect(id);
+      return;
+    }
+    openDetail(id);
+  }
+
+  function toggleSelect(id) {
+    if (selectedIds.has(id)) selectedIds.delete(id);
+    else selectedIds.add(id);
+    updateCompareBar();
+    renderCases();
+  }
+
+  function updateCompareBar() {
+    const bar = document.getElementById('compare-bar');
+    const btn = document.getElementById('btn-compare');
+    const count = selectedIds.size;
+    document.getElementById('cmp-count').textContent = count;
+    if (count >= 2) {
+      bar.classList.remove('hidden');
+      btn.style.display = '';
+    } else {
+      bar.classList.add('hidden');
+      btn.style.display = 'none';
+    }
+  }
+
+  function clearSelection() {
+    selectedIds.clear();
+    updateCompareBar();
+    document.getElementById('compare-view').classList.remove('active');
+    renderCases();
+  }
+
+  function openDetail(id) {
+    const c = allCases.find(x => x.id === id);
+    if (!c) return;
+    openCase = c;
+
+    const bz = c.bazi;
+    document.getElementById('det-name').textContent = c.name;
+    document.getElementById('det-desc').textContent = c.description;
+
+    document.getElementById('det-birth').innerHTML = `
+      <div class="birth-info-item"><span>出生</span>${c.birth.year}年${c.birth.month}月${c.birth.day}日 ${c.birth.hour}时</div>
+      <div class="birth-info-item"><span>性别</span>${c.gender === 'male' ? '男' : '女'}</div>
+    `;
+
+    document.getElementById('det-tags').innerHTML = (c.tags||[]).map(t => `<span class="tag" style="margin-right:6px">${t}</span>`).join('');
+
+    // 四柱
+    const pillarsEl = document.getElementById('det-pillars');
+    const pillarKeys = ['year','month','day','hour'];
+    const pillarLabels = ['年柱','月柱','日柱','时柱'];
+    pillarsEl.innerHTML = pillarKeys.map((k, i) => {
+      const p = bz[k];
+      const stemWX = BAZI.WUXING_TG[BAZI.TIANGAN.indexOf(p.stem)];
+      const brWX   = BAZI.WUXING_DZ[BAZI.DIZHI.indexOf(p.branch)];
+      return `
+        <div class="pillar">
+          <div class="pillar__label">${pillarLabels[i]}</div>
+          <div class="pillar__stem" style="color:${WX_COLOR[stemWX] || 'var(--gold)'}">${p.stem}</div>
+          <div class="pillar__branch">${p.branch}</div>
+          <div class="pillar__element">
+            <span style="color:${WX_COLOR[stemWX]}">${stemWX}</span>
+            <span class="text-tertiary"> / </span>
+            <span style="color:${WX_COLOR[brWX]}">${brWX}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('det-analysis').textContent = c.analysis;
+    document.getElementById('det-source').textContent = `参考来源：${c.source || '历史文献考证'}`;
+
+    document.getElementById('detail-panel').classList.remove('hidden');
+    document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showCompare() {
+    const cases = allCases.filter(c => selectedIds.has(c.id));
+    if (cases.length < 2) { ML.toast('请选中至少2个命例（Ctrl+点击）', 'error'); return; }
+
+    const pillarKeys = ['year','month','day','hour'];
+    const pillarLabels = ['年柱','月柱','日柱','时柱'];
+
+    const head = document.getElementById('cmp-head');
+    const body = document.getElementById('cmp-body');
+
+    head.innerHTML = `<tr>
+      <th style="width:100px">项目</th>
+      ${cases.map(c => `<th>${c.name}</th>`).join('')}
+    </tr>`;
+
+    const rows = [
+      { label: '出生年', fn: c => `${c.birth.year}年` },
+      ...pillarKeys.map((k, i) => ({
+        label: pillarLabels[i],
+        fn: c => {
+          const p = c.bazi[k];
+          const wx = BAZI.WUXING_TG[BAZI.TIANGAN.indexOf(p.stem)];
+          return `<span style="color:${WX_COLOR[wx]}">${p.stem}</span>${p.branch}`;
+        }
+      })),
+      { label: '日主', fn: c => {
+        const s = c.bazi.day.stem;
+        const wx = BAZI.WUXING_TG[BAZI.TIANGAN.indexOf(s)];
+        return `<span style="color:${WX_COLOR[wx]}">${s}（${wx}）</span>`;
+      }},
+      { label: '分析', fn: c => `<span class="text-secondary" style="font-size:0.8rem">${c.analysis.substring(0,60)}…</span>` }
+    ];
+
+    body.innerHTML = rows.map(row => `
+      <tr>
+        <td class="text-tertiary" style="white-space:nowrap">${row.label}</td>
+        ${cases.map(c => `<td>${row.fn(c)}</td>`).join('')}
+      </tr>
+    `).join('');
+
+    document.getElementById('compare-view').classList.add('active');
+    document.getElementById('compare-view').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // 标签筛选
+  document.getElementById('tag-filters').addEventListener('click', e => {
+    const chip = e.target.closest('.tag-filter');
+    if (!chip) return;
+    document.querySelectorAll('.tag-filter').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentTag = chip.dataset.tag;
+    renderCases();
+  });
+
+  function getBuiltinCases() {
+    // 内置少量数据作为 fallback
+    return [
+      {
+        id: 'mao-zedong', name: '毛泽东',
+        birth: { year:1893, month:12, day:26, hour:7 },
+        gender: 'male',
+        description: '中华人民共和国主要缔造者，政治家、军事家',
+        tags: ['历史人物','领袖','近现代'],
+        bazi: { year:{stem:'癸',branch:'巳'}, month:{stem:'甲',branch:'子'}, day:{stem:'丁',branch:'酉'}, hour:{stem:'甲',branch:'辰'} },
+        analysis: '日主丁火生于子月，冬令水旺，丁火弱。年干癸水七杀，月干甲木正印，印星生身。格局为印绶格，印助弱主，木火通明。',
+        source: '《中国名人八字解析》'
+      }
+    ];
+  }
+
+  loadCases();
+</script>
+</body>
+</html>
