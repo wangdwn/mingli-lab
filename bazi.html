@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>八字排盘 · 命理学数字实验室</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .input-card {
+      max-width: 680px;
+      margin: 0 auto 48px;
+    }
+    .gender-toggle {
+      display: flex;
+      gap: 8px;
+    }
+    .gender-btn {
+      flex: 1;
+      padding: 11px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      transition: all var(--duration) var(--ease);
+      cursor: pointer;
+    }
+    .gender-btn.active {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .result-section { max-width: 860px; margin: 0 auto; }
+
+    /* 十神标签 */
+    .shishen-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
+      margin-top: 6px;
+    }
+
+    /* 五行条形图 */
+    .wx-bars { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .wx-bar-row { display: flex; align-items: center; gap: 12px; }
+    .wx-bar-label { width: 28px; font-size: 0.85rem; font-weight: 600; text-align: right; }
+    .wx-bar-track { flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; }
+    .wx-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s var(--ease); }
+    .wx-bar-val { width: 28px; font-size: 0.8rem; color: var(--text-tertiary); }
+
+    /* 大运表格 */
+    .dayun-scroll { overflow-x: auto; }
+    .dayun-grid {
+      display: flex; gap: 10px; padding-bottom: 8px; min-width: max-content;
+    }
+    .dayun-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      text-align: center;
+      min-width: 80px;
+      transition: all var(--duration) var(--ease);
+    }
+    .dayun-item:hover { border-color: var(--border-gold); }
+    .dayun-item__age  { font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 8px; }
+    .dayun-item__stem { font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .dayun-item__branch { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 6px; }
+    .dayun-item__ss { font-size: 0.65rem; color: var(--text-tertiary); }
+
+    /* 藏干展示 */
+    .canggan-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .canggan-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    /* Tab */
+    .tabs {
+      display: flex; gap: 4px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1; padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: all var(--duration) var(--ease);
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @media (max-width: 600px) {
+      .pillars { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html" class="active">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">BaZi Calculator</div>
+  <h1 class="display-lg">八字排盘</h1>
+  <p class="body-lg text-secondary" style="margin-top:12px; max-width:480px; margin-left:auto; margin-right:auto;">
+    输入出生时间，推演四柱八字、十神、纳音、大运
+  </p>
+</div>
+
+<main style="padding: 0 0 96px;">
+  <div class="container">
+
+    <!-- 输入表单 -->
+    <div class="card input-card">
+      <h2 class="headline" style="margin-bottom:24px;">出生信息</h2>
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label class="form-label">出生年</label>
+          <input class="form-input" id="inp-year" type="number" min="100" max="2100" placeholder="如 1990" data-today="year">
+        </div>
+        <div class="form-group">
+          <label class="form-label">出生月</label>
+          <select class="form-select" id="inp-month">
+            <option value="">选择月份</option>
+            <option value="1">1月（正月）</option>
+            <option value="2">2月（二月）</option>
+            <option value="3">3月（三月）</option>
+            <option value="4">4月（四月）</option>
+            <option value="5">5月（五月）</option>
+            <option value="6">6月（六月）</option>
+            <option value="7">7月（七月）</option>
+            <option value="8">8月（八月）</option>
+            <option value="9">9月（九月）</option>
+            <option value="10">10月（十月）</option>
+            <option value="11">11月（十一月）</option>
+            <option value="12">12月（十二月）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">出生日</label>
+          <input class="form-input" id="inp-day" type="number" min="1" max="31" placeholder="如 15" data-today="day">
+        </div>
+        <div class="form-group">
+          <label class="form-label">出生时（24h）</label>
+          <select class="form-select" id="inp-hour">
+            <option value="23">子时（23:00-01:00）</option>
+            <option value="1">丑时（01:00-03:00）</option>
+            <option value="3">寅时（03:00-05:00）</option>
+            <option value="5">卯时（05:00-07:00）</option>
+            <option value="7">辰时（07:00-09:00）</option>
+            <option value="9">巳时（09:00-11:00）</option>
+            <option value="11">午时（11:00-13:00）</option>
+            <option value="13">未时（13:00-15:00）</option>
+            <option value="15">申时（15:00-17:00）</option>
+            <option value="17">酉时（17:00-19:00）</option>
+            <option value="19">戌时（19:00-21:00）</option>
+            <option value="21">亥时（21:00-23:00）</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:24px;">
+        <label class="form-label">性别</label>
+        <div class="gender-toggle">
+          <button class="gender-btn active" data-gender="male">♂ 男命</button>
+          <button class="gender-btn" data-gender="female">♀ 女命</button>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary" id="btn-calc" style="flex:1">排盘推算 →</button>
+        <button class="btn btn-secondary" id="btn-today">填入今日</button>
+      </div>
+    </div>
+
+    <!-- 结果区 -->
+    <div id="result" class="result-section hidden">
+      <div class="result-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 class="headline" id="res-title">八字命盘</h2>
+            <p class="body-sm text-tertiary" id="res-subtitle"></p>
+          </div>
+          <button class="btn btn-ghost" onclick="copyResult()">复制命盘</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <div class="tab-btn active" data-tab="pillars">四柱八字</div>
+          <div class="tab-btn" data-tab="shishen">十神分析</div>
+          <div class="tab-btn" data-tab="wuxing">五行统计</div>
+          <div class="tab-btn" data-tab="dayun">大运推算</div>
+        </div>
+
+        <!-- Tab: 四柱 -->
+        <div class="tab-panel active" id="tab-pillars">
+          <div class="pillars" id="pillars-grid"></div>
+          <div style="margin-top:24px; padding:20px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+            <div class="body-sm text-tertiary" id="res-nayin"></div>
+          </div>
+        </div>
+
+        <!-- Tab: 十神 -->
+        <div class="tab-panel" id="tab-shishen">
+          <div id="shishen-content"></div>
+        </div>
+
+        <!-- Tab: 五行 -->
+        <div class="tab-panel" id="tab-wuxing">
+          <div id="wuxing-content"></div>
+        </div>
+
+        <!-- Tab: 大运 -->
+        <div class="tab-panel" id="tab-dayun">
+          <p class="body-sm text-secondary" style="margin-bottom:16px;" id="dayun-desc"></p>
+          <div class="dayun-scroll">
+            <div class="dayun-grid" id="dayun-grid"></div>
+          </div>
+          <p class="body-sm text-tertiary" style="margin-top:16px;">注：起运年龄为简化值，精确值需依出生前后节气距离推算。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，仅供参考</p>
+  </div>
+</footer>
+
+<script src="js/bazi.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let currentResult = null;
+  let isMale = true;
+
+  // 性别切换
+  document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      isMale = btn.dataset.gender === 'male';
+    });
+  });
+
+  // 今日按钮
+  document.getElementById('btn-today').addEventListener('click', () => {
+    const now = new Date();
+    document.getElementById('inp-year').value  = now.getFullYear();
+    document.getElementById('inp-month').value = now.getMonth() + 1;
+    document.getElementById('inp-day').value   = now.getDate();
+    const h = now.getHours();
+    // 选择对应时辰
+    const hourSel = document.getElementById('inp-hour');
+    let bestHour = 23;
+    if      (h >= 1  && h < 3)  bestHour = 1;
+    else if (h >= 3  && h < 5)  bestHour = 3;
+    else if (h >= 5  && h < 7)  bestHour = 5;
+    else if (h >= 7  && h < 9)  bestHour = 7;
+    else if (h >= 9  && h < 11) bestHour = 9;
+    else if (h >= 11 && h < 13) bestHour = 11;
+    else if (h >= 13 && h < 15) bestHour = 13;
+    else if (h >= 15 && h < 17) bestHour = 15;
+    else if (h >= 17 && h < 19) bestHour = 17;
+    else if (h >= 19 && h < 21) bestHour = 19;
+    else if (h >= 21 && h < 23) bestHour = 21;
+    hourSel.value = bestHour;
+  });
+
+  // Tab 切换
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    });
+  });
+
+  // 排盘
+  document.getElementById('btn-calc').addEventListener('click', calculate);
+
+  function calculate() {
+    const year  = +document.getElementById('inp-year').value;
+    const month = +document.getElementById('inp-month').value;
+    const day   = +document.getElementById('inp-day').value;
+    const hour  = +document.getElementById('inp-hour').value;
+
+    if (!year || !month || !day) { ML.toast('请填写完整出生信息', 'error'); return; }
+    if (year < 100 || year > 2100) { ML.toast('请输入有效年份（100-2100）', 'error'); return; }
+
+    const r = BAZI.calculate(year, month, day, hour, isMale);
+    currentResult = r;
+    renderResult(r);
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderResult(r) {
+    const { pillars, daymaster, wxCount, dayuns } = r;
+    const genderTxt = r.input.male ? '男命' : '女命';
+
+    document.getElementById('res-title').textContent = `${pillars[2].stem}${pillars[2].branch}日 · ${genderTxt}`;
+    document.getElementById('res-subtitle').textContent =
+      `${r.input.year}年${r.input.month}月${r.input.day}日 · 日主${daymaster.stem}（${daymaster.wx}）`;
+
+    // ── 四柱 ──
+    const labels = ['年柱','月柱','日柱','时柱'];
+    const grid = document.getElementById('pillars-grid');
+    grid.innerHTML = pillars.map((p, i) => `
+      <div class="pillar">
+        <div class="pillar__label">${p.label}</div>
+        <div class="pillar__stem" style="color:${ML.WX_COLOR[p.stemWX] || 'var(--gold)'}">${p.stem}</div>
+        <div class="pillar__branch">${p.branch}</div>
+        <div class="pillar__element">
+          <span style="color:${ML.WX_COLOR[p.stemWX]}">${p.stemWX}${p.stemYY}</span>
+          <span class="text-tertiary"> / </span>
+          <span style="color:${ML.WX_COLOR[p.branchWX]}">${p.branchWX}</span>
+        </div>
+        ${i !== 2 ? `<div class="shishen-badge">${p.shishenStem}</div>` : '<div class="shishen-badge" style="background:rgba(245,245,247,0.08);color:var(--text-secondary);border-color:var(--border)">日主</div>'}
+        <div class="canggan-row">
+          ${(p.canggan||[]).map(([g, w]) => `<span class="canggan-tag" style="color:${ML.WX_COLOR[BAZI.WUXING_TG[BAZI.TIANGAN.indexOf(g)]]}">${g}(${w})</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('res-nayin').innerHTML =
+      pillars.map(p => `<span style="margin-right:24px;"><span class="text-secondary">${p.label}纳音：</span>${p.nayin || '—'}</span>`).join('');
+
+    // ── 十神分析 ──
+    const shishenContent = document.getElementById('shishen-content');
+    shishenContent.innerHTML = `
+      <div style="background:var(--bg-secondary);border-radius:var(--radius-md);padding:20px;margin-bottom:20px;">
+        <p class="caption text-tertiary" style="margin-bottom:8px;">日主 · 命主五行</p>
+        <p style="font-size:1.1rem;font-weight:600;">
+          ${daymaster.stem}
+          <span style="color:${ML.WX_COLOR[daymaster.wx]}">${daymaster.wx}</span>
+          <span class="text-secondary">${daymaster.yy}</span>
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>柱</th><th>天干</th><th>五行</th><th>十神（干）</th>
+            <th>地支</th><th>藏干主气</th><th>十神（支）</th>
+          </tr></thead>
+          <tbody>
+            ${pillars.map(p => `
+              <tr>
+                <td class="text-tertiary">${p.label}</td>
+                <td style="font-weight:600;color:${ML.WX_COLOR[p.stemWX]}">${p.stem}</td>
+                <td><span style="color:${ML.WX_COLOR[p.stemWX]}">${p.stemWX}</span></td>
+                <td><span class="tag tag-gold">${p.shishenStem}</span></td>
+                <td style="font-weight:600">${p.branch}</td>
+                <td style="color:${ML.WX_COLOR[BAZI.WUXING_TG[BAZI.TIANGAN.indexOf((p.canggan||[['']])[0][0])]]}">${(p.canggan||[['']])[0][0] || '—'}</td>
+                <td><span class="tag">${p.shishenBranch || '—'}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:24px;">
+        <p class="caption text-tertiary" style="margin-bottom:12px;">十神释义</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${Object.entries(BAZI.SHISHEN_DESC).map(([k, v]) => `
+            <div style="padding:12px;background:var(--bg-secondary);border-radius:var(--radius-sm);">
+              <span class="text-gold" style="font-weight:600;font-size:0.85rem;">${k}</span>
+              <span class="text-secondary" style="font-size:0.8rem;margin-left:8px;">${v}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // ── 五行 ──
+    const total = Object.values(wxCount).reduce((a, b) => a + b, 0);
+    const wxContent = document.getElementById('wuxing-content');
+    wxContent.innerHTML = `
+      <div style="background:var(--bg-secondary);border-radius:var(--radius-md);padding:24px;margin-bottom:24px;">
+        <p class="caption text-tertiary" style="margin-bottom:16px;">五行分布（含藏干权重）</p>
+        <div class="wx-bars">
+          ${['木','火','土','金','水'].map(wx => {
+            const val = wxCount[wx] || 0;
+            const pct = total > 0 ? (val / total * 100).toFixed(0) : 0;
+            return `
+              <div class="wx-bar-row">
+                <div class="wx-bar-label" style="color:${ML.WX_COLOR[wx]}">${wx}</div>
+                <div class="wx-bar-track">
+                  <div class="wx-bar-fill" style="width:${pct}%;background:${ML.WX_COLOR[wx]}"></div>
+                </div>
+                <div class="wx-bar-val">${val}</div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div style="padding:20px;background:var(--bg-secondary);border-radius:var(--radius-md);">
+        <p class="caption text-tertiary" style="margin-bottom:12px;">五行含义</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${Object.entries(BAZI.WX_DESC).map(([wx, desc]) => `
+            <div style="display:flex;gap:12px;align-items:baseline;">
+              <span style="color:${ML.WX_COLOR[wx]};font-weight:700;width:16px">${wx}</span>
+              <span class="body-sm text-secondary">${desc}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // ── 大运 ──
+    const fwd = (r.input.male && r.pillars[0].stemIdx % 2 === 0) ||
+                (!r.input.male && r.pillars[0].stemIdx % 2 !== 0);
+    document.getElementById('dayun-desc').textContent =
+      `${genderTxt} · ${pillars[0].stem}${pillars[0].stemIdx % 2 === 0 ? '阳' : '阴'}年 · ${fwd ? '顺行' : '逆行'}大运`;
+
+    const dayunGrid = document.getElementById('dayun-grid');
+    dayunGrid.innerHTML = dayuns.map(d => `
+      <div class="dayun-item">
+        <div class="dayun-item__age">${d.startAge}岁起</div>
+        <div class="dayun-item__stem" style="color:${ML.WX_COLOR[d.stemWX]}">${d.stem}</div>
+        <div class="dayun-item__branch">${d.branch}</div>
+        <div class="dayun-item__ss">${d.shishen}</div>
+      </div>
+    `).join('');
+  }
+
+  function copyResult() {
+    if (!currentResult) return;
+    const r = currentResult;
+    const text = `命理学数字实验室 八字命盘
+出生：${r.input.year}年${r.input.month}月${r.input.day}日 ${r.input.male?'男':'女'}命
+四柱：${r.pillars.map(p => p.stem + p.branch).join(' ')}
+五行：${Object.entries(r.wxCount).map(([k,v])=>`${k}:${v}`).join(' ')}
+日主：${r.daymaster.stem}（${r.daymaster.wx}${r.daymaster.yy}）`;
+    ML.copyToClipboard(text);
+  }
+</script>
+</body>
+</html>
