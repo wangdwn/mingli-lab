@@ -25,15 +25,159 @@
     .method-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--gold); }
     .method-card p, .method-card li { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
     .method-card ul { margin: 8px 0 0 1.1em; padding: 0; }
+
+    /* 白话解读层：与专业盘面区分开 */
     .vernacular-box {
-      margin-top: 24px;
-      padding: 20px;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
+      margin: 0 0 28px;
+      padding: 0;
+      background: linear-gradient(165deg, rgba(201,168,76,0.10), rgba(245,245,247,0.04) 42%, var(--bg-secondary));
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 0 0 1px rgba(201,168,76,0.08), 0 12px 40px rgba(0,0,0,0.18);
+      overflow: hidden;
     }
-    .vernacular-box h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: var(--gold); }
-    .vernacular-box p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .vc-banner {
+      padding: 22px 22px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(201,168,76,0.06);
+    }
+    .vc-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .vc-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 10px;
+      line-height: 1.35;
+    }
+    .vc-lead {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin: 0;
+    }
+    .vc-section {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .vc-section:last-child { border-bottom: none; }
+    .vc-h {
+      font-size: 0.98rem;
+      font-weight: 650;
+      color: var(--text-primary);
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+    .vc-sub {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+    }
+    .vc-section p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin: 0 0 10px;
+    }
+    .vc-section p:last-child { margin-bottom: 0; }
+    .vc-soft {
+      font-size: 0.82rem !important;
+      color: var(--text-tertiary) !important;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.18);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--gold-dim);
+    }
+    .vc-term {
+      display: inline-block;
+      padding: 1px 8px;
+      margin: 0 2px;
+      border-radius: 999px;
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-weight: 650;
+      font-size: 0.86rem;
+      border: 1px solid var(--border-gold);
+    }
+    .vc-role {
+      display: inline-block;
+      margin: 0 4px 0 2px;
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+    }
+    .vc-role::before { content: "→ "; color: var(--gold); opacity: 0.7; }
+    .vc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0 8px;
+    }
+    .vc-card {
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.16);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .vc-card__head { margin-bottom: 6px; }
+    .vc-card__body {
+      font-size: 0.82rem !important;
+      color: var(--text-secondary) !important;
+      line-height: 1.65 !important;
+      margin: 0 !important;
+    }
+    .vc-quote {
+      margin: 10px 0 12px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--gold);
+      background: rgba(0,0,0,0.2);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-family: 'PingFang SC', 'STSong', 'SimSun', serif;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+    }
+    .vc-disclaimer ul {
+      margin: 8px 0 0 1.1em;
+      padding: 0;
+    }
+    .vc-disclaimer li {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+    .raw-panel-label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 8px 0 16px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+    .raw-panel-label strong {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    .raw-panel-label span {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+    }
+    @media (max-width: 640px) {
+      .vc-banner, .vc-section { padding-left: 16px; padding-right: 16px; }
+      .vc-grid { grid-template-columns: 1fr; }
+      .vc-title { font-size: 1.05rem; }
+    }
     .gender-toggle {
       display: flex;
       gap: 8px;
@@ -179,7 +323,7 @@
           <li><strong>无真太阳时／无经纬度</strong>：不校正出生地时差与经度，时柱以所填钟点为准。</li>
           <li><strong>起运简化</strong>：大运起运岁固定为约 3 岁起、每运 10 年，未按出生日与前后节气距离细算。</li>
           <li><strong>权重近似</strong>：藏干计入五行时用简化权重；纳音取自六十甲子对照表的简化实现。</li>
-          <li><strong>定位</strong>：学术小工具，输出为结构化排盘与固定白话提要，非算命结论、非 AI 解读。</li>
+          <li><strong>定位</strong>：学术小工具；排盘后先给「白话解读」（日主气质／五行生活义／十神日常说法／大运大意），再展示术语原表。非算命承诺、非 AI 生成。</li>
         </ul>
       </div>
     </div>
@@ -248,12 +392,22 @@
     <!-- 结果区 -->
     <div id="result" class="result-section hidden">
       <div class="result-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
           <div>
             <h2 class="headline" id="res-title">八字命盘</h2>
             <p class="body-sm text-tertiary" id="res-subtitle"></p>
           </div>
           <button class="btn btn-ghost" onclick="copyResult()">复制命盘</button>
+        </div>
+
+        <!-- 白话解读：放在专业盘面之前 -->
+        <div class="vernacular-box" id="vernacular-box">
+          <div id="vernacular-content"></div>
+        </div>
+
+        <div class="raw-panel-label">
+          <strong>专业盘面（术语原表）</strong>
+          <span>需要对照原典或细项时再往下看</span>
         </div>
 
         <!-- Tabs -->
@@ -269,10 +423,6 @@
           <div class="pillars" id="pillars-grid"></div>
           <div style="margin-top:24px; padding:20px; background:var(--bg-secondary); border-radius:var(--radius-md);">
             <div class="body-sm text-tertiary" id="res-nayin"></div>
-          </div>
-          <div class="vernacular-box" id="vernacular-box">
-            <h3>白话提要（固定模板 · 非 AI）</h3>
-            <div id="vernacular-content"></div>
           </div>
         </div>
 
@@ -308,6 +458,7 @@
 </footer>
 
 <script src="js/bazi.js"></script>
+<script src="js/vernacular.js"></script>
 <script src="js/main.js"></script>
 <script>
   let currentResult = null;
@@ -486,29 +637,8 @@
       </div>
     `;
 
-    // ── 白话提要（固定模板，非 AI） ──
-    (function fillVernacular() {
-      const monthStemSS = pillars[1].shishenStem;
-      const yearStemSS  = pillars[0].shishenStem;
-      const hourStemSS  = pillars[3].shishenStem;
-      const entries = Object.entries(wxCount).sort((a,b)=>b[1]-a[1]);
-      const strong = entries[0][0];
-      const weak   = entries[entries.length-1][0];
-      const strongVal = entries[0][1];
-      const weakVal   = entries[entries.length-1][1];
-      const ssDesc = BAZI.SHISHEN_DESC[monthStemSS] || '';
-      const wxDesc = BAZI.WX_DESC[daymaster.wx] || '';
-      const paras = [
-        `日主为「${daymaster.stem}」，属${daymaster.wx}${daymaster.yy}。五行意象上，${wxDesc}。本提要只复述排盘结构，不作吉凶定论。`,
-        `月干十神见「${monthStemSS}」${ssDesc ? '——' + ssDesc : ''}。年干「${yearStemSS}」、时干「${hourStemSS}」一并列出，便于与原典格局条文对照。`,
-        `五行计量（含藏干简化权重）中，相对偏旺者为「${strong}」（约 ${strongVal}），相对偏弱者为「${weak}」（约 ${weakVal}）。此为计数观察，非「用神」裁决。`,
-        `四柱纳音：${pillars.map(p => p.label + p.nayin).join('、')}。纳音取自六十甲子对照之简化实现。`,
-        `大运按简化起运：约自 ${dayuns[0] ? dayuns[0].startAge : '—'} 岁起，每运十年顺／逆依年干阴阳与性别而定；精确起运与真太阳时未纳入。`,
-        `说明：以上六句均为站点内固定句式填空，不调用外部模型；若需细论，请结合《渊海子平》《三命通会》等原典自行研读。`
-      ];
-      document.getElementById('vernacular-content').innerHTML =
-        paras.map(p => `<p>${p}</p>`).join('');
-    })();
+    // ── 白话解读（固定模板，非 AI；置于专业盘面之前） ──
+    document.getElementById('vernacular-content').innerHTML = VERNACULAR.renderBazi(r);
 
     // ── 大运 ──
     const fwd = (r.input.male && r.pillars[0].stemIdx % 2 === 0) ||
