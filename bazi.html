@@ -304,6 +304,7 @@
     <li><a href="tiepan.html">铁板神数</a></li>
     <li><a href="search.html">条文检索</a></li>
     <li><a href="cases.html">历史命例</a></li>
+    <li><a href="hepan.html">合盘</a></li>
     <li><a href="notes.html">学习笔记</a></li>
   </ul>
   <div class="nav-toggle"><span></span><span></span><span></span></div>
@@ -668,15 +669,23 @@
     `).join('');
   }
 
-  function copyResult() {
+    function copyResult() {
     if (!currentResult) return;
     const r = currentResult;
-    const text = `命理学数字实验室 八字命盘
+    const dm = (VERNACULAR.DAYMASTER_PLAIN || {})[r.daymaster.stem] || {};
+    const entries = Object.entries(r.wxCount).sort((a,b)=>b[1]-a[1]);
+    const strong = entries[0] ? entries[0][0] : '';
+    const weak = entries.length ? entries[entries.length-1][0] : '';
+    const text = `命理实验室 · 八字白话摘要（固定模板·非AI）
 出生：${r.input.year}年${r.input.month}月${r.input.day}日 ${r.input.male?'男':'女'}命
 四柱：${r.pillars.map(p => p.stem + p.branch).join(' ')}
-五行：${Object.entries(r.wxCount).map(([k,v])=>`${k}:${v}`).join(' ')}
-日主：${r.daymaster.stem}（${r.daymaster.wx}${r.daymaster.yy}）`;
+日主：${r.daymaster.stem}（${r.daymaster.wx}）——${dm.vibe || ''}
+生活提示：${dm.tip || ''}
+五行偏旺／偏弱：${strong} / ${weak}
+计数：${Object.entries(r.wxCount).map(([k,v])=>`${k}:${v}`).join(' ')}
+说明：学术对照用，非算命承诺。详见 https://wangdw.xyz/mingli-lab/`;
     ML.copyToClipboard(text);
+    if (ML.toast) ML.toast('已复制白话摘要', 'ok');
   }
 </script>
 </body>

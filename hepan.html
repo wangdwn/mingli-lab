@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轻量合盘 · 命理学数字实验室</title>
+  <meta name="description" content="两人生日对照：日主气质与五行结构白话对比（固定模板，非 AI，非婚恋承诺）">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .person-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+    }
+    .person-card h3 {
+      font-size: 1rem;
+      margin: 0 0 16px;
+      color: var(--gold);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group label { display:block; font-size:0.78rem; color:var(--text-tertiary); margin-bottom:6px; }
+    .gender-row { display:flex; gap:8px; margin-bottom: 8px; }
+    .gender-btn {
+      flex:1; padding:8px; border-radius: var(--radius-md);
+      border:1px solid var(--border); background:var(--bg-secondary);
+      color:var(--text-secondary); cursor:pointer; font:inherit;
+    }
+    .gender-btn.active { border-color:var(--border-gold); color:var(--gold); background:var(--gold-dim); }
+    .compare-banner {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-gold);
+      background: linear-gradient(165deg, rgba(201,168,76,0.10), var(--bg-secondary));
+    }
+    .mini-pillars {
+      display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-top:12px;
+    }
+    .mini-p {
+      text-align:center; padding:10px 6px; background:var(--bg-secondary);
+      border-radius: var(--radius-sm); border:1px solid var(--border);
+    }
+    .mini-p .s { font-size:1.25rem; font-weight:700; }
+    .mini-p .b { font-size:1.25rem; font-weight:700; }
+    .mini-p .l { font-size:0.65rem; color:var(--text-tertiary); margin-bottom:4px; }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__logo"><div class="nav__logo-icon">☯</div><span>命理学数字实验室</span></div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+    <li><a href="hepan.html" class="active">合盘</a></li>
+    <li><a href="notes.html">学习笔记</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">Light Pair Compare</div>
+  <h1 class="display-lg">轻量合盘</h1>
+  <p class="body-lg text-secondary" style="margin-top:12px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7;">
+    填两个人的生日，用<strong>白话</strong>对照日主气质与五行结构——固定模板，非 AI，<strong>不作婚恋／合伙人承诺</strong>。
+  </p>
+</div>
+
+<main style="padding:0 0 96px;">
+  <div class="container" style="max-width:960px;">
+    <div class="about-bazi" style="margin-bottom:24px;">
+      <div class="method-card">
+        <h4>⬡ 这页做什么</h4>
+        <p>各排一盘八字，比较：日主是否同气、五行谁帮谁、相处时可试的沟通句。不是紫微合盘，也没有 AI 长文。</p>
+      </div>
+      <div class="method-card">
+        <h4>⬡ 边界</h4>
+        <ul>
+          <li>沿用八字页的简化算法（近似节气、无真太阳时）。</li>
+          <li>关系用语来自五行生克的教学翻译，不是感情鉴定。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hepan-grid" id="forms">
+      <!-- A -->
+      <div class="person-card" data-who="a">
+        <h3>甲 · 第一人</h3>
+        <div class="gender-row">
+          <button type="button" class="gender-btn active" data-g="male">男</button>
+          <button type="button" class="gender-btn" data-g="female">女</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>年</label><input class="form-input y" type="number" placeholder="1990"></div>
+          <div class="form-group"><label>月</label><input class="form-input m" type="number" min="1" max="12" placeholder="6"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>日</label><input class="form-input d" type="number" min="1" max="31" placeholder="15"></div>
+          <div class="form-group"><label>时（0–23）</label><input class="form-input h" type="number" min="0" max="23" value="12"></div>
+        </div>
+      </div>
+      <!-- B -->
+      <div class="person-card" data-who="b">
+        <h3>乙 · 第二人</h3>
+        <div class="gender-row">
+          <button type="button" class="gender-btn active" data-g="male">男</button>
+          <button type="button" class="gender-btn" data-g="female">女</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>年</label><input class="form-input y" type="number" placeholder="1992"></div>
+          <div class="form-group"><label>月</label><input class="form-input m" type="number" min="1" max="12" placeholder="9"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>日</label><input class="form-input d" type="number" min="1" max="31" placeholder="3"></div>
+          <div class="form-group"><label>时（0–23）</label><input class="form-input h" type="number" min="0" max="23" value="12"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:24px 0; text-align:center;">
+      <button class="btn btn-primary" id="btn-compare" type="button">对照白话 →</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <div class="compare-banner" id="compare-vernacular"></div>
+      <div class="hepan-grid" style="margin-top:20px;" id="compare-cards"></div>
+      <div class="next-steps" style="margin-top:24px;">
+        <div class="next-steps__title">还能做什么</div>
+        <div class="next-steps__grid">
+          <button type="button" class="next-steps__btn" onclick="copyHepan()"><strong>复制对照摘要</strong><span>带走白话要点</span></button>
+          <a class="next-steps__btn" href="bazi.html"><strong>各自细排八字</strong><span>看完整白话＋术语原表</span></a>
+          <a class="next-steps__btn" href="search.html?q=方法"><strong>检索方法笔记</strong><span>先学读法再谈合盘</span></a>
+          <a class="next-steps__btn" href="notes-wuxing.html"><strong>五行判读笔记</strong><span>当令／关系六步摘要</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，仅供参考</p>
+  </div>
+</footer>
+
+<script src="js/bazi.js"></script>
+<script src="js/vernacular.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let lastCompare = null;
+
+  document.querySelectorAll('.person-card').forEach(card => {
+    card.querySelectorAll('.gender-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        card.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  });
+
+  function readPerson(who) {
+    const card = document.querySelector(`.person-card[data-who="${who}"]`);
+    const year = +card.querySelector('.y').value;
+    const month = +card.querySelector('.m').value;
+    const day = +card.querySelector('.d').value;
+    const hour = +card.querySelector('.h').value;
+    const male = card.querySelector('.gender-btn.active').dataset.g === 'male';
+    if (!year || !month || !day) return null;
+    return BAZI.calculate(year, month, day, Number.isFinite(hour) ? hour : 12, male);
+  }
+
+  function topWx(wxCount) {
+    return Object.entries(wxCount).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  function weakWx(wxCount) {
+    return Object.entries(wxCount).sort((a,b)=>a[1]-b[1])[0][0];
+  }
+
+  const REL_PLAIN = {
+    same: '同气——节奏容易合拍，也容易「抢同一类戏份」；合作时要分清楚谁主谁辅。',
+    produce: '甲生乙——甲更像给燃料／出主意的一方，乙更容易把事做亮；注意甲别烧干、乙别空转。',
+    produced: '乙生甲——乙在滋养／托底，甲在往外长；乙要边界，甲要记得回馈。',
+    control: '甲克乙——甲标准／压力感更强，乙可能觉得被管；把规则说清会好过硬刚。',
+    controlled: '乙克甲——乙侧压力或规矩更明显；甲宜借力而非硬顶，乙宜留余地。',
+    none: '关系不突出——对照各自偏旺行即可，不必硬凑故事。'
+  };
+
+  function renderSide(label, r) {
+    const dm = VERNACULAR.DAYMASTER_PLAIN[r.daymaster.stem] || {};
+    return `
+      <div class="person-card">
+        <h3>${label} · 日主 ${r.daymaster.stem}${r.daymaster.wx}</h3>
+        <p class="body-sm text-secondary" style="line-height:1.7;margin:0 0 8px;">${dm.vibe || ''} —— ${dm.life || ''}</p>
+        <p class="body-sm text-tertiary" style="margin:0;">偏旺 ${topWx(r.wxCount)} · 偏弱 ${weakWx(r.wxCount)}</p>
+        <div class="mini-pillars">
+          ${r.pillars.map(p => `
+            <div class="mini-p">
+              <div class="l">${p.label}</div>
+              <div class="s" style="color:${ML.WX_COLOR[p.stemWX]||'var(--gold)'}">${p.stem}</div>
+              <div class="b">${p.branch}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('btn-compare').addEventListener('click', () => {
+    const a = readPerson('a');
+    const b = readPerson('b');
+    if (!a || !b) { ML.toast('请把两边的年月日填全', 'error'); return; }
+
+    const rel = BAZI.wxRelation(a.daymaster.wx, b.daymaster.wx);
+    const dmA = VERNACULAR.DAYMASTER_PLAIN[a.daymaster.stem] || {};
+    const dmB = VERNACULAR.DAYMASTER_PLAIN[b.daymaster.stem] || {};
+    const strongA = topWx(a.wxCount), strongB = topWx(b.wxCount);
+    const relKey = rel === 'produce' ? 'produce' :
+                   rel === 'produced' ? 'produced' :
+                   rel === 'control' ? 'control' :
+                   rel === 'controlled' ? 'controlled' :
+                   rel === 'same' ? 'same' : 'none';
+
+    let collab;
+    if (relKey === 'same') collab = '一起做事时：先约定分工，避免两人抢同一个「主角位」。';
+    else if (relKey === 'produce' || relKey === 'produced') collab = '一起做事时：让「生」的一方多出输入，「被生」的一方多负责呈现／落地。';
+    else if (relKey === 'control' || relKey === 'controlled') collab = '一起做事时：先写清验收标准与边界，少用语气施压。';
+    else collab = '一起做事时：各自发挥偏旺行的长处，用清单对齐进度即可。';
+
+    lastCompare = { a, b, relKey, collab };
+
+    document.getElementById('compare-vernacular').innerHTML = `
+      <div class="vc-kicker">白话对照 · 固定模板 · 非 AI</div>
+      <h3 class="vc-title" style="margin:8px 0 12px;">先看两人怎么「对上气」</h3>
+      <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.8;margin:0 0 12px;">
+        <strong>甲</strong>日主「${a.daymaster.stem}」——${dmA.vibe || ''}；
+        <strong>乙</strong>日主「${b.daymaster.stem}」——${dmB.vibe || ''}。
+      </p>
+      <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.8;margin:0 0 12px;">
+        以日主五行为轴：甲属<strong>${a.daymaster.wx}</strong>，乙属<strong>${b.daymaster.wx}</strong>。
+        ${REL_PLAIN[relKey]}
+      </p>
+      <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.8;margin:0 0 12px;">
+        结构上甲盘偏旺「${strongA}」，乙盘偏旺「${strongB}」。
+        ${strongA === strongB ? '两人主旋律相近，容易互相理解，也容易一起钻进同一偏好。' : '主旋律不同，互补空间更大，沟通时先翻译彼此在忙什么。'}
+      </p>
+      <p class="vc-soft" style="margin:0;">可试一句：${collab} 本页不作婚恋／合伙吉凶结论。</p>
+    `;
+
+    document.getElementById('compare-cards').innerHTML =
+      renderSide('甲', a) + renderSide('乙', b);
+
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function copyHepan() {
+    if (!lastCompare) return;
+    const { a, b, relKey, collab } = lastCompare;
+    const dmA = VERNACULAR.DAYMASTER_PLAIN[a.daymaster.stem] || {};
+    const dmB = VERNACULAR.DAYMASTER_PLAIN[b.daymaster.stem] || {};
+    const text = `命理实验室 · 轻量合盘摘要（固定模板·非AI）
+甲：${a.pillars.map(p=>p.stem+p.branch).join(' ')} 日主${a.daymaster.stem}${a.daymaster.wx} —— ${dmA.vibe||''}
+乙：${b.pillars.map(p=>p.stem+p.branch).join(' ')} 日主${b.daymaster.stem}${b.daymaster.wx} —— ${dmB.vibe||''}
+日主五行关系：${relKey}
+对照：${REL_PLAIN[relKey]}
+可试：${collab}
+说明：学术对照，非婚恋承诺。https://wangdw.xyz/mingli-lab/hepan.html`;
+    ML.copyToClipboard(text);
+  }
+</script>
+</body>
+</html>

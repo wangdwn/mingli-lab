@@ -143,10 +143,121 @@ const VERNACULAR = (() => {
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  const GLOSSARY = {
+    '日主': '命盘里代表「你」的那一天的天干。所有十神关系都相对它而言。',
+    '月令': '出生月份的地支，常被看作当令的「气候」——影响谁旺谁弱。',
+    '当令': '此刻力量最盛的一行。像季节里谁唱主角。',
+    '休王': '王／相／休／囚／死五档：描述某行在当令气候里的强弱，不等于吉凶判决。',
+    '十神': '用「生克」把其他人事物相对日主贴上的关系标签：贵人、压力、表达、钱财等。',
+    '比肩': '同类人、竞争与合作并存。',
+    '劫财': '果决敢争，也容易在金钱或机会上被分一杯或自己冲动出手。',
+    '食神': '才艺、表达、享受感——把内在变成作品会舒服。',
+    '伤官': '聪明爱创新，也容易顶权威；锋芒宜用在创作或解题。',
+    '偏财': '偏门机会、社交型收入、广泛人脉。',
+    '正财': '工资、稳定进账、踏实经营。',
+    '七杀': '外界压力大，也逼出决断力。',
+    '正官': '责任、职称、社会评价——按规则做事会吃香。',
+    '偏印': '独特思路、技艺、非主流学习。',
+    '正印': '长辈、老师、证书、庇护。',
+    '大运': '大约十年一段的人生季候，影响重心，不写剧本。',
+    '纳音': '另一套「听起来属哪一行」的标签，部分流派用来微调。',
+    '本卦': '这次推算落到的主卦意象。',
+    '变卦': '本卦进一步变化后的意象，常用来对照转机。',
+    '先天数': '把出生参数加总映射到「第几卷第几条」的教学数字。',
+    '用神': '传统论命里「最该借力／调候」的那一行——本站不做裁决。',
+    '四柱': '年、月、日、时四组干支，合称八字。'
+  };
+
+  function tipFor(term) {
+    if (!term) return '';
+    if (GLOSSARY[term]) return GLOSSARY[term];
+    // stem alone
+    const stem = String(term).charAt(0);
+    if (DAYMASTER_PLAIN[stem]) return DAYMASTER_PLAIN[stem].vibe + '。' + DAYMASTER_PLAIN[stem].life;
+    // strip wx suffix like 甲木
+    const bare = String(term).replace(/[木火土金水阴阳]/g, '');
+    if (GLOSSARY[bare]) return GLOSSARY[bare];
+    if (SHISHEN_PLAIN[bare]) return SHISHEN_PLAIN[bare].plain;
+    if (WX_LIFE[term]) return WX_LIFE[term].body + '。' + (WX_LIFE[term].wang || '');
+    return '';
+  }
+
   function termChip(term, role) {
     const t = esc(term);
+    const tip = tipFor(String(term).replace(/[木火土金水阴阳]/g, '') === String(term)
+      ? term
+      : (SHISHEN_PLAIN[term] ? term : String(term)));
+    // Prefer exact glossary / shishen / daymaster tip
+    let title = tipFor(term);
+    if (!title && role && GLOSSARY[String(term).replace(/（.*?）/g,'')]) {
+      title = GLOSSARY[String(term).replace(/（.*?）/g,'')];
+    }
+    if (!title) title = tipFor(String(term).charAt(0)) || (role ? String(role) : '');
+    const titleAttr = title ? ` title="${esc(title)}"` : '';
     const r = role ? `<span class="vc-role">${esc(role)}</span>` : '';
-    return `<span class="vc-term">${t}</span>${r}`;
+    return `<span class="vc-term"${titleAttr}>${t}</span>${r}`;
+  }
+
+  function lifeScenarios(dayStem, strongWx, weakWx, dmXw) {
+    const dm = DAYMASTER_PLAIN[dayStem] || { vibe: '', tip: '' };
+    const strong = WX_LIFE[strongWx] || {};
+    const weak = WX_LIFE[weakWx] || {};
+    const work = {
+      '甲': '工作上更适合「开新题／带队冲」；例会里主动认领一块可交付的小目标。',
+      '乙': '工作上更适合「协调缝合」；帮两边对齐口径，往往比硬推方案更省力。',
+      '丙': '工作上更适合「公开表达／演示」；把进展做成可见的更新，比闷头写文档更对味。',
+      '丁': '工作上更适合「打磨细节／质检」；把一页材料改到能发出去，比同时开十个坑更安心。',
+      '戊': '工作上更适合「守底盘／收尾」；把流程写清楚、把责任落到人，比追新热点更稳。',
+      '己': '工作上更适合「育人运营」；把资源变成可复用的清单或模板。',
+      '庚': '工作上更适合「拍板／砍范围」；先定不做清单，再推进。',
+      '辛': '工作上更适合「品质与标准」；先立验收标准，再动手。',
+      '壬': '工作上更适合「串人脉／拓渠道」；多一次有效对接，胜过多开一个空项目。',
+      '癸': '工作上更适合「洞察与陪伴式沟通」；先听清楚对方真正卡点，再给方案。'
+    };
+    const relate = {
+      '木': '相处时宜留生长空间：少打断、多给试错窗口。',
+      '火': '相处时宜坦诚可见：情绪说到点上，别只靠气氛硬撑。',
+      '土': '相处时宜给安全感：说到做到、节奏可预期。',
+      '金': '相处时宜边界清楚：约定规则，减少含糊期待。',
+      '水': '相处时宜信息疏通：把误会摊开说，别让猜测淤积。'
+    };
+    const paceNote = {
+      '王': '当令偏顺，可试一件「主旋律」的事（立项、发声、推进）。',
+      '相': '有顺风助力，可推进但别把所有筹码一次押上。',
+      '休': '宜养不宜抢戏：把基础打牢，比硬冲更划算。',
+      '囚': '行动成本偏高：借人或换时点，比硬刚更聪明。',
+      '死': '不宜硬推：先做蓄势、复盘、学习，等气回来。'
+    };
+    return `
+      <section class="vc-section">
+        <h4 class="vc-h">⑤ 落到生活里可以怎么用 <span class="vc-sub">场景句 · 非命运剧本</span></h4>
+        <div class="vc-life">
+          <div class="vc-life__item"><strong>工作节奏</strong><p>${esc(work[dayStem] || dm.tip)}</p></div>
+          <div class="vc-life__item"><strong>相处方式</strong><p>${esc(relate[strongWx] || '')} 若你感到「${esc(weakWx)}」气偏弱：${esc(weak.weak || '先把一件小事做稳。')}</p></div>
+          <div class="vc-life__item"><strong>当令节奏（相对出生月令）</strong><p>${esc(paceNote[dmXw] || '')} 偏旺的「${esc(strongWx)}」体性是：${esc(strong.body || '')}。</p></div>
+        </div>
+        <p class="vc-soft">这些是「怎么读盘」的练习句，用来把术语落到可观察行为——不是预测今晚会发生什么。</p>
+      </section>`;
+  }
+
+  function renderNextSteps(kind, opts) {
+    opts = opts || {};
+    const q = encodeURIComponent(opts.searchQ || '');
+    const searchHref = q ? `search.html?q=${q}` : 'search.html';
+    const copyId = opts.copyFn || 'copyResult';
+    const hepan = kind === 'bazi'
+      ? `<a class="next-steps__btn" href="hepan.html"><strong>合盘对照</strong><span>两人生日 → 日主／五行白话对比</span></a>`
+      : `<a class="next-steps__btn" href="bazi.html"><strong>再排八字</strong><span>用同一生日看子平结构</span></a>`;
+    return `
+      <div class="next-steps" id="next-steps">
+        <div class="next-steps__title">还能做什么</div>
+        <div class="next-steps__grid">
+          <button type="button" class="next-steps__btn" onclick="${copyId}()"><strong>复制摘要</strong><span>带走白话要点，方便对照笔记</span></button>
+          <a class="next-steps__btn" href="${searchHref}"><strong>检索相关条文</strong><span>${esc(opts.searchHint || '打开检索，对照方法与原文')}</span></a>
+          <a class="next-steps__btn" href="notes.html"><strong>打开学习笔记</strong><span>铁板四段论／五行六步摘要</span></a>
+          ${hepan}
+        </div>
+      </div>`;
   }
 
   function renderBazi(r) {
@@ -239,21 +350,29 @@ const VERNACULAR = (() => {
         <p class="vc-soft">十神全是「相对日主」的标签。下面表格仍保留原术语，方便对照《千里命稿》《渊海子平》等。</p>
       </section>
 
+      ${lifeScenarios(daymaster.stem, strong, weak, dmXw)}
+
       <section class="vc-section">
-        <h4 class="vc-h">⑤ 大运大意 <span class="vc-sub">十年一段的「人生季候」</span></h4>
+        <h4 class="vc-h">⑥ 大运大意 <span class="vc-sub">十年一段的「人生季候」</span></h4>
         <p>${esc(genderTxt)} · 年干「${esc(pillars[0].stem)}」为${pillars[0].stemIdx % 2 === 0 ? '阳' : '阴'}，按简化规则大运${fwd ? '顺行' : '逆行'}。</p>
         ${firstYun ? `<p>约从 <strong>${firstYun.startAge} 岁</strong>起第一运「${esc(firstYun.stem)}${esc(firstYun.branch)}」${firstYun.shishen ? `（${termChip(firstYun.shishen, firstSS ? firstSS.role : '')}）` : ''}。${firstSS ? esc(firstSS.plain) : ''} 后续每运十年换一段——影响重心，不决定命运剧本。</p>` : ''}
         <p class="vc-soft">起运岁数此处固定约 3 岁起、每运 10 年；精确起运需节气距离与真太阳时，本站尚未实现。</p>
       </section>
 
       <section class="vc-section vc-disclaimer">
-        <h4 class="vc-h">⑥ 读法说明</h4>
+        <h4 class="vc-h">⑦ 读法说明</h4>
         <ul>
           <li>本解读为<strong>站点内固定句式填空</strong>，不调用外部模型，不编造具体事件。</li>
           <li>当令／休王为教学简化；真太阳时、精确起运、用神裁决未纳入。</li>
           <li>方法来源简述见 <a href="notes.html" style="color:var(--gold)">学习笔记</a>；用途：自学对照——<strong>非算命、非医疗／法律建议</strong>。</li>
         </ul>
       </section>
+
+      ${renderNextSteps('bazi', {
+        searchQ: (ssSet[0] || daymaster.wx || '方法'),
+        searchHint: '按十神／五行关键词对照条文与方法笔记',
+        copyFn: 'copyResult'
+      })}
     `;
   }
 
@@ -328,8 +447,14 @@ const VERNACULAR = (() => {
           <li>方法摘要见 <a href="notes.html" style="color:var(--gold)">学习笔记</a>；<strong>非算命、非医疗建议</strong>。</li>
         </ul>
       </section>
+
+      ${renderNextSteps('tiepan', {
+        searchQ: hasArticle ? (r.tiaowen.category || r.guaName || '方法') : '方法',
+        searchHint: hasArticle ? ('对照「' + (r.tiaowen.category || '') + '」类条文与方法笔记') : '先看方法／验证笔记，再查原典卷条',
+        copyFn: 'copyTiepan'
+      })}
     `;
   }
 
-  return { renderBazi, renderTiepan, SHISHEN_PLAIN, DAYMASTER_PLAIN, GUA_PLAIN, WX_LIFE, XIUWANG_PLAIN };
+  return { renderBazi, renderTiepan, renderNextSteps, SHISHEN_PLAIN, DAYMASTER_PLAIN, GUA_PLAIN, WX_LIFE, XIUWANG_PLAIN, GLOSSARY, tipFor };
 })();

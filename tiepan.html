@@ -286,6 +286,7 @@
     <li><a href="tiepan.html" class="active">铁板神数</a></li>
     <li><a href="search.html">条文检索</a></li>
     <li><a href="cases.html">历史命例</a></li>
+    <li><a href="hepan.html">合盘</a></li>
     <li><a href="notes.html">学习笔记</a></li>
   </ul>
   <div class="nav-toggle"><span></span><span></span><span></span></div>
@@ -376,7 +377,10 @@
     <!-- 结果 -->
     <div id="tp-result" class="hidden" style="max-width:760px; margin:0 auto;">
       <div class="result-panel">
-        <h2 class="headline" style="margin-bottom:20px;">推算结果</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <h2 class="headline" style="margin:0;">推算结果</h2>
+          <button class="btn btn-ghost" type="button" onclick="copyTiepan()">复制摘要</button>
+        </div>
 
         <!-- 白话解读：放在步骤／术语之前 -->
         <div class="vernacular-box" id="tp-vernacular-box" style="margin-bottom:28px;">
@@ -404,7 +408,7 @@
         </div>
 
         <p class="body-sm text-tertiary" style="margin-top:16px; padding:12px; background:var(--bg-secondary); border-radius:var(--radius-sm);">
-          ⓘ 原典条文远多于此。本站现收精选 29 条（JSON）／推盘内置约 17 条；未命中时仅提示查阅原典，不编造条文。完整内容请参阅邵雍著、陈明点校《铁板神数》。
+          ⓘ 原典条文远多于此。本站 <code>data/tiepan.json</code> 现收精选约 57 条（含方法／验证笔记）；未命中时仅提示查阅原典，不编造条文。完整内容请参阅邵雍著、陈明点校《铁板神数》。
         </p>
       </div>
 
@@ -430,6 +434,7 @@
 <script src="js/main.js"></script>
 <script>
   let isMale = true;
+  let currentTP = null;
 
   document.querySelectorAll('.gender-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -456,6 +461,7 @@
     const yearBranch = DZ[(year - 4 + 4000) % 12];
 
     const r = TIEPAN.calculate(yearStem, yearBranch, month, day, hour, isMale);
+    currentTP = r;
     renderTP(r, year);
     document.getElementById('tp-result').classList.remove('hidden');
     document.getElementById('tp-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -534,6 +540,21 @@
         </div>
       </div>
     `;
+  }
+
+  function copyTiepan() {
+    if (!currentTP) return;
+    const r = currentTP;
+    const text = `命理实验室 · 铁板白话摘要（固定模板·非AI）
+参数：${r.yearStem}${r.yearBranch}年 农历${r.month}月${r.day}日 时支${r.hourBranch} ${r.male?'男':'女'}命
+先天总数：${r.totalNum} → 第${r.juanNum}卷第${r.tiaoNum}条
+本卦／变卦：${r.guaName} → ${r.bianGuaName}
+条文：${(r.tiaowen && (r.tiaowen.text || r.tiaowen.title)) || ''}（${(r.tiaowen && r.tiaowen.category) || ''}）
+白话：${(r.tiaowen && r.tiaowen.plain) || '（库内未收正文时仅有卷／条索引）'}
+读法：参数→数字→条文→用已知事实验证。非算命承诺。
+https://wangdw.xyz/mingli-lab/tiepan.html`;
+    ML.copyToClipboard(text);
+    if (ML.toast) ML.toast('已复制白话摘要', 'ok');
   }
 </script>
 </body>

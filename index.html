@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>命理学数字实验室 · Mingli Lab</title>
-  <meta name="description" content="命理学数字实验室——学术级八字排盘、铁板神数计算、条文检索与历史命例对比平台">
+  <meta name="description" content="命理实验室：填生日→白话读懂→对照原典。八字／铁板排盘、条文检索、轻量合盘（学术小工具，非算命）">
   <link rel="stylesheet" href="css/style.css">
   <style>
     /* ── 主页专属样式 ── */
@@ -12,8 +12,8 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      max-width: 640px;
-      margin: 64px auto 0;
+      max-width: 720px;
+      margin: 40px auto 0;
       animation: fadeUp 0.6s 0.4s var(--ease) both;
     }
     .mini-card {
@@ -126,6 +126,7 @@
     <li><a href="tiepan.html">铁板神数</a></li>
     <li><a href="search.html">条文检索</a></li>
     <li><a href="cases.html">历史命例</a></li>
+    <li><a href="hepan.html">合盘</a></li>
     <li><a href="notes.html">学习笔记</a></li>
   </ul>
   <div class="nav-toggle" aria-label="菜单"><span></span><span></span><span></span></div>
@@ -139,12 +140,37 @@
     命理学<br><em>数字实验室</em>
   </h1>
   <p class="hero__subtitle">
-    以现代数字技术还原传统命理学精髓。<br>
-    八字／铁板排盘 · 白话解读 · 条文检索 · 历史命例
+    外行也能用的流程：<strong>填生日 → 白话读懂 → 对照原典</strong>。<br>
+    八字／铁板 · 固定模板白话（非 AI）· 条文检索 · 轻量合盘
   </p>
   <div class="hero__actions">
-    <a href="bazi.html" class="btn btn-primary">开始排盘 →</a>
-    <a href="cases.html" class="btn btn-secondary">查看命例</a>
+    <a href="bazi.html" class="btn btn-primary">① 填生日 · 八字白话 →</a>
+    <a href="tiepan.html" class="btn btn-secondary">① 填生日 · 铁板白话</a>
+  </div>
+
+  <div class="path-steps" style="animation: fadeUp 0.6s 0.35s var(--ease) both;">
+    <div class="path-step">
+      <div class="path-step__num">STEP 01</div>
+      <div class="path-step__title">填生日</div>
+      <div class="path-step__desc">选八字或铁板，填年月日时与性别。算法在浏览器本地跑，不上传。</div>
+      <a class="path-step__cta" href="bazi.html">去八字排盘 →</a>
+      &nbsp;·&nbsp;
+      <a class="path-step__cta" href="tiepan.html">去铁板推算 →</a>
+    </div>
+    <div class="path-step">
+      <div class="path-step__num">STEP 02</div>
+      <div class="path-step__title">白话读懂</div>
+      <div class="path-step__desc">先出固定模板人话：日主气质、当令休王、十神日常说法、生活场景句——不是术语堆砌。</div>
+      <a class="path-step__cta" href="bazi.html">看白话怎么写 →</a>
+    </div>
+    <div class="path-step">
+      <div class="path-step__num">STEP 03</div>
+      <div class="path-step__title">对照原典／检索</div>
+      <div class="path-step__desc">术语原表收在后面；方法笔记与精选条文可检索。悬停术语芯片可看短释义。</div>
+      <a class="path-step__cta" href="search.html">打开条文检索 →</a>
+      &nbsp;·&nbsp;
+      <a class="path-step__cta" href="notes.html">学习笔记 →</a>
+    </div>
   </div>
 
   <!-- 迷你四柱展示 -->
@@ -173,6 +199,11 @@
       <div class="mini-card__icon">✎</div>
       <div class="mini-card__title">学习笔记</div>
       <div class="mini-card__desc">铁板／五行／道学框架摘要</div>
+    </a>
+    <a href="hepan.html" class="mini-card">
+      <div class="mini-card__icon">⇄</div>
+      <div class="mini-card__title">轻量合盘</div>
+      <div class="mini-card__desc">两人生日 → 日主／五行白话对比</div>
     </a>
   </div>
 </section>
