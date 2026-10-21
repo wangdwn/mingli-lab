@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>五行判读摘要 · 学习笔记</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .prose { max-width: 720px; margin: 0 auto; }
+    .prose h2 { font-size: 1.25rem; color: var(--gold); margin: 36px 0 12px; }
+    .prose p, .prose li { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.85; }
+    .prose ul, .prose ol { margin: 0 0 16px 1.2em; }
+    .prose li { margin-bottom: 8px; }
+    .callout {
+      padding: 14px 16px; margin: 20px 0; border-radius: var(--radius-md);
+      border-left: 3px solid var(--gold); background: var(--bg-secondary);
+      font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .back { display:inline-block; margin-bottom: 24px; color: var(--gold); text-decoration:none; font-size:0.9rem; }
+    table { width:100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 0.88rem; }
+    th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; color: var(--text-secondary); }
+    th { color: var(--gold); background: var(--bg-secondary); }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__logo"><div class="nav__logo-icon">☯</div><span>命理学数字实验室</span></div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+    <li><a href="notes.html" class="active">学习笔记</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">Wuxing Framework · Paraphrase</div>
+  <h1 class="display-lg">五行判读六步摘要</h1>
+</div>
+
+<main style="padding:0 0 96px;">
+  <div class="container prose">
+    <a class="back" href="notes.html">← 学习笔记</a>
+    <div class="callout">
+      一句话：先把事物塞进五行坐标（名—性—数），再看谁当令，再判两行相遇是什么关系，最后落到人事动作。
+      五行是看势的语言，不是概率机。底本：隋·萧吉《五行大义》（钱杭点校）；本页为框架白话摘要。
+    </div>
+
+    <h2>六步</h2>
+    <ol>
+      <li><strong>定坐标</strong>：属木火土金水哪一行？用途优先，其次功能，最后形色。</li>
+      <li><strong>定当令</strong>：王／相／休／囚／死——谁最盛、谁最弱。</li>
+      <li><strong>预筛</strong>：有气还是无气？有无合德（可解）或刑克（加重）？这一句要先写。</li>
+      <li><strong>判关系</strong>：生、杂、德、合、扶抑、克、刑、害、冲破……归成顺／逆／反。</li>
+      <li><strong>定权重</strong>：顺到什么程度、逆到什么地步、有无救应。</li>
+      <li><strong>落地</strong>：做／缓／换时点或人选——给动作，不编造金额与精确日期。</li>
+    </ol>
+
+    <h2>休王白话</h2>
+    <table>
+      <tr><th>档</th><th>人话</th></tr>
+      <tr><td>王</td><td>主力在场，宜做主旋律</td></tr>
+      <tr><td>相</td><td>顺风帮手，可推进</td></tr>
+      <tr><td>休</td><td>歇着，不是坏</td></tr>
+      <tr><td>囚</td><td>被压，成本高</td></tr>
+      <tr><td>死</td><td>最不宜硬推——不等于坏事</td></tr>
+    </table>
+
+    <h2>体性一句话</h2>
+    <ul>
+      <li>木：曲直——能伸能弯</li>
+      <li>火：炎上——照亮发热</li>
+      <li>土：稼穑——承载养人</li>
+      <li>金：从革——切割收束</li>
+      <li>水：润下——流动渗透</li>
+    </ul>
+
+    <h2>常见误用</h2>
+    <ul>
+      <li>把休王直接当吉凶判决。</li>
+      <li>以为相生一定有利（也可能泄气耗母）。</li>
+      <li>忽略「杂」——事物很少是纯某一行。</li>
+      <li>越界要「几月落地、能挣多少」——框架应拒答数值预测。</li>
+    </ul>
+
+    <p><a href="bazi.html" style="color:var(--gold)">打开八字排盘（白话层已嵌入当令／休王）</a></p>
+  </div>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer__logo">命理学数字实验室</div></div></footer>
+<script src="js/main.js"></script>
+</body>
+</html>

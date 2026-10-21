@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学习笔记 · 命理学数字实验室</title>
+  <meta name="description" content="铁板实操、五行判读、道学认知——读书框架的白话摘要，非原书全文。">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .note-card {
+      display: block;
+      text-decoration: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      transition: all var(--duration) var(--ease);
+    }
+    .note-card:hover {
+      border-color: var(--border-gold);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-gold);
+    }
+    .note-card__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .note-card__title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .note-card__desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .disclaimer {
+      margin-top: 40px;
+      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      line-height: 1.75;
+    }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__logo">
+    <div class="nav__logo-icon">☯</div>
+    <span>命理学数字实验室</span>
+  </div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+    <li><a href="notes.html" class="active">学习笔记</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">Study Notes</div>
+  <h1 class="display-lg">学习笔记</h1>
+  <p class="body-lg text-secondary" style="margin-top:12px; max-width:560px; margin-left:auto; margin-right:auto;">
+    读书框架的<strong>白话摘要</strong>——用来读盘、验证、看势。不是原书全文，也不作算命承诺。
+  </p>
+</div>
+
+<main style="padding: 0 0 96px;">
+  <div class="container">
+    <div class="note-grid">
+      <a class="note-card" href="notes-tiepan.html">
+        <div class="note-card__eyebrow">01 · 铁板</div>
+        <div class="note-card__title">铁板神数实操摘要</div>
+        <div class="note-card__desc">参数→数字→条文→验证。刻分、三考、流派边界，以及本站加总法能做什么、不能做什么。</div>
+      </a>
+      <a class="note-card" href="notes-wuxing.html">
+        <div class="note-card__eyebrow">02 · 五行</div>
+        <div class="note-card__title">五行判读六步摘要</div>
+        <div class="note-card__desc">名—性—数，当令休王，关系与权重。用来看势，不直接给概率和金额。</div>
+      </a>
+      <a class="note-card" href="notes-daoxue.html">
+        <div class="note-card__eyebrow">03 · 道学</div>
+        <div class="note-card__title">道学认知框架摘要</div>
+        <div class="note-card__desc">道家／道教／丹道三分与五字诀。术数放在文化坐标里看，避免神秘化。</div>
+      </a>
+      <a class="note-card" href="search.html">
+        <div class="note-card__eyebrow">04 · 检索</div>
+        <div class="note-card__title">条文与方法笔记检索</div>
+        <div class="note-card__desc">库内精选条文＋方法类条目（分类可选「方法／验证」）。</div>
+      </a>
+    </div>
+
+    <div class="disclaimer">
+      <strong style="color:var(--text-secondary)">版权与边界</strong><br>
+      本页为学习笔记摘要，依据个人读书框架改写，不提供《铁板神数》《五行大义》《道学通论》《千里命稿》等原书全文或扫描件下载。
+      需要精确原文请自行购置点校本。紫微纶阁等内部协作文档不在本实验室公开发布。
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">命理学数字实验室 · <em>Mingli Lab</em></div>
+    <p>学术研究工具，非商业占卜服务</p>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>

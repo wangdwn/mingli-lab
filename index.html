@@ -10,9 +10,9 @@
     /* ── 主页专属样式 ── */
     .hero-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      max-width: 520px;
+      max-width: 640px;
       margin: 64px auto 0;
       animation: fadeUp 0.6s 0.4s var(--ease) both;
     }
@@ -126,6 +126,7 @@
     <li><a href="tiepan.html">铁板神数</a></li>
     <li><a href="search.html">条文检索</a></li>
     <li><a href="cases.html">历史命例</a></li>
+    <li><a href="notes.html">学习笔记</a></li>
   </ul>
   <div class="nav-toggle" aria-label="菜单"><span></span><span></span><span></span></div>
 </nav>
@@ -167,6 +168,11 @@
       <div class="mini-card__icon">◈</div>
       <div class="mini-card__title">历史命例</div>
       <div class="mini-card__desc">名人八字·对比分析</div>
+    </a>
+    <a href="notes.html" class="mini-card">
+      <div class="mini-card__icon">✎</div>
+      <div class="mini-card__title">学习笔记</div>
+      <div class="mini-card__desc">铁板／五行／道学框架摘要</div>
     </a>
   </div>
 </section>
@@ -238,7 +244,7 @@
     </div>
     <div class="stats">
       <div class="stat">
-        <div class="stat__num" data-target="29">0</div>
+        <div class="stat__num" data-target="57">0</div>
         <div class="stat__label">铁板条文（精选）</div>
       </div>
       <div class="stat">
@@ -255,7 +261,7 @@
       </div>
     </div>
     <p class="body-sm text-tertiary text-center" style="margin-top:28px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.7;">
-      以上数字据仓库实有数据：条文 <code>data/tiepan.json</code> 现收 <strong>29</strong> 条；命例 <code>data/cases.json</code> 现收 <strong>14</strong> 例。纳音／十神为算法常量（60／10）。库容将随原典材料扩充，不以虚数示人。
+      以上数字据仓库实有数据：条文 <code>data/tiepan.json</code> 现收 <strong>57</strong> 条（含方法笔记）；命例 <code>data/cases.json</code> 现收 <strong>14</strong> 例。纳音／十神为算法常量（60／10）。库容将随原典材料扩充，不以虚数示人。
     </p>
   </div>
 </section>
@@ -291,7 +297,15 @@
       </div>
       <div class="source-item">
         <div class="source-item__title">《紫微斗数全书》</div>
-        <div class="source-item__desc">陈希夷原著。斗数命理之源，与八字并列为中国两大推命体系。</div>
+        <div class="source-item__desc">陈希夷原著。斗数命理之源，与八字并列为中国两大推命体系。本站暂未做紫微排盘产品。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">《五行大义》</div>
+        <div class="source-item__desc">隋·萧吉撰。本站「当令／休王／体性」白话层与学习笔记，据读书框架整理（钱杭点校本为底本参照）。</div>
+      </div>
+      <div class="source-item">
+        <div class="source-item__title">方法笔记（本站）</div>
+        <div class="source-item__desc">《铁板神数实操框架》《五行判读框架》等摘要已入库检索，并写入排盘白话层——非原书全文。</div>
       </div>
     </div>
   </div>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>铁板实操摘要 · 学习笔记</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .prose { max-width: 720px; margin: 0 auto; }
+    .prose h2 { font-size: 1.25rem; color: var(--gold); margin: 36px 0 12px; }
+    .prose h3 { font-size: 1.05rem; margin: 24px 0 10px; color: var(--text-primary); }
+    .prose p, .prose li { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.85; }
+    .prose ul, .prose ol { margin: 0 0 16px 1.2em; }
+    .prose li { margin-bottom: 8px; }
+    .callout {
+      padding: 14px 16px; margin: 20px 0; border-radius: var(--radius-md);
+      border-left: 3px solid var(--gold); background: var(--bg-secondary);
+      font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .back { display:inline-block; margin-bottom: 24px; color: var(--gold); text-decoration:none; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav__logo"><div class="nav__logo-icon">☯</div><span>命理学数字实验室</span></div>
+  <ul class="nav__links">
+    <li><a href="index.html">首页</a></li>
+    <li><a href="bazi.html">八字排盘</a></li>
+    <li><a href="tiepan.html">铁板神数</a></li>
+    <li><a href="search.html">条文检索</a></li>
+    <li><a href="cases.html">历史命例</a></li>
+    <li><a href="notes.html" class="active">学习笔记</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header__label">Tiepan Framework · Paraphrase</div>
+  <h1 class="display-lg">铁板神数实操摘要</h1>
+</div>
+
+<main style="padding:0 0 96px;">
+  <div class="container prose">
+    <a class="back" href="notes.html">← 学习笔记</a>
+    <div class="callout">
+      一句话：从生辰生成可验证的数字，用已知事实校准起数路径，再用校准后的路径去对未知之事的条文编号。
+      底本参照邵雍著、陈明点校《铁板神数》；本页为读书框架白话摘要，非原书照录。
+    </div>
+
+    <h2>四段论</h2>
+    <ol>
+      <li><strong>参数</strong>：四柱干支 + 刻分（一时辰八刻，约每刻十五分钟）。时间误差过大，铁板精度优势会消失。</li>
+      <li><strong>数字</strong>：按所选流派公式把干支／纳音换成数，合成命数与六亲分项数，再按刻分微调。</li>
+      <li><strong>条文</strong>：数字映射到卷／条诗句。同一数字在不同活盘／死盘语境可能对应不同读法。</li>
+      <li><strong>验证</strong>：先用父母、兄弟排行、婚姻等已知事实核对；三考通过再推未知。不符则调刻分或换公式，勿硬解。</li>
+    </ol>
+
+    <h2>三条硬规则（白话）</h2>
+    <ul>
+      <li><strong>考刻</strong>：六亲条文与事实吻合，才是路径有效的证据；一刻之差可以千里。</li>
+      <li><strong>映射</strong>：每个数对应条文，但同一条文可被多个数摸到——所以要靠验证收窄。</li>
+      <li><strong>验证优先</strong>：未知之事排在已知校准之后。</li>
+    </ul>
+
+    <h2>本站工具边界</h2>
+    <ul>
+      <li>现用「先天数加总」教学简化版，<strong>未接入刻分修正表</strong>，也未分拆父母／兄弟／妻财／子女分项起数。</li>
+      <li>条文库为精选 + 方法笔记；未命中时只提示原典卷条，不生成假诗。</li>
+      <li>与八字配合：八字偏定性，铁板偏可核对事件；勿互相替代，更勿用于投资决策。</li>
+    </ul>
+
+    <h2>接着做</h2>
+    <p><a href="tiepan.html" style="color:var(--gold)">打开铁板推盘</a> · <a href="search.html" style="color:var(--gold)">检索「方法／验证」类条目</a></p>
+  </div>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer__logo">命理学数字实验室</div></div></footer>
+<script src="js/main.js"></script>
+</body>
+</html>
