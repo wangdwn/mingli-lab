@@ -10,6 +10,30 @@
       max-width: 680px;
       margin: 0 auto 48px;
     }
+
+    .about-bazi {
+      max-width: 760px;
+      margin: 0 auto 48px;
+    }
+    .method-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .method-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--gold); }
+    .method-card p, .method-card li { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+    .method-card ul { margin: 8px 0 0 1.1em; padding: 0; }
+    .vernacular-box {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .vernacular-box h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: var(--gold); }
+    .vernacular-box p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
     .gender-toggle {
       display: flex;
       gap: 8px;
@@ -142,6 +166,24 @@
 <main style="padding: 0 0 96px;">
   <div class="container">
 
+    <!-- 方法／简化边界 -->
+    <div class="about-bazi">
+      <div class="method-card">
+        <h4>⬡ 方法说明</h4>
+        <p>本页按子平术流程，由公历年月日时推四柱干支，再标十神、纳音、藏干与大运，供学术对照与教学演示。</p>
+      </div>
+      <div class="method-card">
+        <h4>⬡ 简化边界（请先读）</h4>
+        <ul>
+          <li><strong>节气月份</strong>：用固定近似节气日切月，非天文算法；交节前后边界日可能偏差。</li>
+          <li><strong>无真太阳时／无经纬度</strong>：不校正出生地时差与经度，时柱以所填钟点为准。</li>
+          <li><strong>起运简化</strong>：大运起运岁固定为约 3 岁起、每运 10 年，未按出生日与前后节气距离细算。</li>
+          <li><strong>权重近似</strong>：藏干计入五行时用简化权重；纳音取自六十甲子对照表的简化实现。</li>
+          <li><strong>定位</strong>：学术小工具，输出为结构化排盘与固定白话提要，非算命结论、非 AI 解读。</li>
+        </ul>
+      </div>
+    </div>
+
     <!-- 输入表单 -->
     <div class="card input-card">
       <h2 class="headline" style="margin-bottom:24px;">出生信息</h2>
@@ -228,6 +270,10 @@
           <div style="margin-top:24px; padding:20px; background:var(--bg-secondary); border-radius:var(--radius-md);">
             <div class="body-sm text-tertiary" id="res-nayin"></div>
           </div>
+          <div class="vernacular-box" id="vernacular-box">
+            <h3>白话提要（固定模板 · 非 AI）</h3>
+            <div id="vernacular-content"></div>
+          </div>
         </div>
 
         <!-- Tab: 十神 -->
@@ -246,7 +292,7 @@
           <div class="dayun-scroll">
             <div class="dayun-grid" id="dayun-grid"></div>
           </div>
-          <p class="body-sm text-tertiary" style="margin-top:16px;">注：起运年龄为简化值，精确值需依出生前后节气距离推算。</p>
+          <p class="body-sm text-tertiary" style="margin-top:16px;">注：起运年龄为简化值（约 3 岁起、每运 10 年）；精确起运需依出生前后节气距离与真太阳时推算——本站暂未实现。</p>
         </div>
       </div>
     </div>
@@ -439,6 +485,30 @@
         </div>
       </div>
     `;
+
+    // ── 白话提要（固定模板，非 AI） ──
+    (function fillVernacular() {
+      const monthStemSS = pillars[1].shishenStem;
+      const yearStemSS  = pillars[0].shishenStem;
+      const hourStemSS  = pillars[3].shishenStem;
+      const entries = Object.entries(wxCount).sort((a,b)=>b[1]-a[1]);
+      const strong = entries[0][0];
+      const weak   = entries[entries.length-1][0];
+      const strongVal = entries[0][1];
+      const weakVal   = entries[entries.length-1][1];
+      const ssDesc = BAZI.SHISHEN_DESC[monthStemSS] || '';
+      const wxDesc = BAZI.WX_DESC[daymaster.wx] || '';
+      const paras = [
+        `日主为「${daymaster.stem}」，属${daymaster.wx}${daymaster.yy}。五行意象上，${wxDesc}。本提要只复述排盘结构，不作吉凶定论。`,
+        `月干十神见「${monthStemSS}」${ssDesc ? '——' + ssDesc : ''}。年干「${yearStemSS}」、时干「${hourStemSS}」一并列出，便于与原典格局条文对照。`,
+        `五行计量（含藏干简化权重）中，相对偏旺者为「${strong}」（约 ${strongVal}），相对偏弱者为「${weak}」（约 ${weakVal}）。此为计数观察，非「用神」裁决。`,
+        `四柱纳音：${pillars.map(p => p.label + p.nayin).join('、')}。纳音取自六十甲子对照之简化实现。`,
+        `大运按简化起运：约自 ${dayuns[0] ? dayuns[0].startAge : '—'} 岁起，每运十年顺／逆依年干阴阳与性别而定；精确起运与真太阳时未纳入。`,
+        `说明：以上六句均为站点内固定句式填空，不调用外部模型；若需细论，请结合《渊海子平》《三命通会》等原典自行研读。`
+      ];
+      document.getElementById('vernacular-content').innerHTML =
+        paras.map(p => `<p>${p}</p>`).join('');
+    })();
 
     // ── 大运 ──
     const fwd = (r.input.male && r.pillars[0].stemIdx % 2 === 0) ||
